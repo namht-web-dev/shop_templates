@@ -1,0 +1,300 @@
+/**
+ * News seed data (10 technology/IoT news articles).
+ * Bilingual text mirrors a future localized backend; images come from the asset manifest.
+ */
+import { IMG } from "@/src/lib/images";
+import type { NewsArticle } from "@/src/types";
+
+function sections(
+  h1: string,
+  p1: string,
+  p2: string,
+  h2: string,
+  p3: string,
+  p4: string,
+  h3: string,
+  p5: string = "",
+): NewsArticle["content"] {
+  return [
+    {
+      heading: { vi: h1, en: h1 },
+      paragraphs: [
+        { vi: p1, en: p1 },
+        { vi: p2, en: p2 },
+      ],
+    },
+    {
+      heading: { vi: h2, en: h2 },
+      paragraphs: [
+        { vi: p3, en: p3 },
+        { vi: p4, en: p4 },
+      ],
+    },
+    { heading: { vi: h3, en: h3 }, paragraphs: [{ vi: p5, en: p5 }] },
+  ];
+}
+
+export const NEWS_ARTICLES: NewsArticle[] = [
+  {
+    id: "n-001",
+    slug: "esp32-c6-matter-support-2026",
+    title: {
+      vi: "ESP32-C6 nhận hỗ trợ Matter 1.4 chính thức từ Espressif",
+      en: "Espressif Ships Official Matter 1.4 Support for ESP32-C6",
+    },
+    excerpt: {
+      vi: "Bản ESP-IDF 5.3 mang chuẩn nhà thông minh Matter 1.4 ổn định đến ESP32-C6, mở đường cho thiết bị tương tác đa hệ sinh thái.",
+      en: "ESP-IDF 5.3 brings stable Matter 1.4 smart home support to ESP32-C6, unlocking cross-ecosystem devices.",
+    },
+    category: "esp32",
+    image: IMG.productEsp32,
+    source: "Espressif Developer Blog",
+    publishedAt: "2026-03-05",
+    readingTime: 4,
+    content: sections(
+      "Chuẩn Matter đến nền tảng giá rẻ",
+      "Espressif công bố ESP-IDF 5.3 với Matter 1.4 ổn định cho dòng ESP32-C6, bao gồm Wi-Fi 6 và Thread kết hợp. Thiết bị based ESP32-C6 giờ đây hoạt động trực tiếp với Apple Home, Google Home và Amazon Alexa không cần bridge.",
+      "Giá module C6 chỉ từ 3 USD — thấp nhất trong các nền tảng Matter được chứng nhận hiện nay.",
+      "Ý nghĩa cho maker Việt Nam",
+      "Với cập nhật này, dự án nhà thông minh tự làm có thể đạt chuẩn tương thích ngành như thiết bị thương mại. Espressif đồng thời phát hành bộ công cụ chứng nhận đơn giản hóa cho nhà phát triển nhỏ.",
+      "Cửa hàng SmartIoTVN dự kiến nhập ESP32-C6 DevKit trong tháng này.",
+      "Nhìn xa hơn",
+      "Thread kết hợp Wi-Fi 6 trên cùng một chip là xu hướng 2026 của nhà thông minh. Sự hỗ trợ chính thức của Espressif rút ngắn đáng kể khoảng cách giữa chuẩn quốc tế và cộng đồng maker.",
+    ),
+  },
+  {
+    id: "n-002",
+    slug: "tinyml-on-mcu-2026-trend",
+    title: {
+      vi: "TinyML 2026: Nhận diện hình ảnh chạy trên MCU 240MHz thành hiện thực",
+      en: "TinyML 2026: Image Recognition on 240MHz MCUs Becomes Reality",
+    },
+    excerpt: {
+      vi: "Các framework TinyML mới giúp model nhận diện 8 lớp chạy hoàn toàn trên ESP32-S3 không cần đám mây.",
+      en: "New TinyML frameworks run 8-class recognition models entirely on ESP32-S3 without any cloud.",
+    },
+    category: "ai-iot",
+    image: IMG.newsAiChip,
+    source: "Edge AI Report",
+    publishedAt: "2026-02-27",
+    readingTime: 5,
+    content: sections(
+      "AI biên bắt kịp phần cứng giá rẻ",
+      "Benchmark tháng 2/2026 cho thấy ESP-DL của Espressif chạy model MobileNetV2 8 lớp với 15fps trên ESP32-S3 240MHz — đủ cho đếm người, phân loại rác, nhận diện khuôn mặt cơ bản không cần Internet.",
+      "Tiêu thụ điện năng chỉ 0.4W so với 15-30W của hệ thống GPU tương đương.",
+      "Tác động đến thiết kế sản phẩm",
+      "Nhà phát triển có thể loại bỏ chi phí cloud và độ trễ mạng khỏi luồng nhận diện. Quyền riêng tư tăng vì hình ảnh không bao giờ rời khỏi thiết bị — yếu tố quyết định cho sản phẩm camera gia đình.",
+      "Khóa học ESP32 Bootcamp của SmartIoTVN sẽ bổ sung chương TinyML trong quý tới.",
+      "Đáng theo dõi",
+      "Cuộc đua giữa các framework TinyML (ESP-DL, TFLite Micro, CMSIS-NN) đang đẩy ranh giới của phần cứng dưới 5 USD nhanh hơn mọi dự đoán.",
+    ),
+  },
+  {
+    id: "n-003",
+    slug: "raspberry-pi-pico-2-w-launch",
+    title: {
+      vi: "Raspberry Pi Pico 2 W ra mắt với chip RP2350 và không dây",
+      en: "Raspberry Pi Pico 2 W Launches with RP2350 and Wireless",
+    },
+    excerpt: {
+      vi: "Bản W mới nhất mang Wi-Fi và Bluetooth 5.2 đến dòng Pico với giá 7 USD, cạnh tranh trực tiếp ESP32.",
+      en: "The new W variant brings Wi-Fi and Bluetooth 5.2 to the Pico line at 7 USD, competing head-on with ESP32.",
+    },
+    category: "products",
+    image: IMG.productArduinoUno,
+    source: "Raspberry Pi Foundation",
+    publishedAt: "2026-02-20",
+    readingTime: 4,
+    content: sections(
+      "RP2350 cuối cùng cũng có không dây",
+      "Raspberry Pi công bố Pico 2 W: chip RP2350 lõi kép 150MHz kết hợp module không dây CYW43439 hỗ trợ Wi-Fi 802.11n và Bluetooth 5.2. Giá công bố 7 USD cho bản 4MB flash.",
+      "Thị trường MCU không dây dưới 10 USD đã có thêm đối thủ trọng yếu.",
+      "So sánh nhanh với ESP32-S3",
+      "Pico 2 W thắng về cộng đồng giáo dục và MicroPython; ESP32-S3 vẫn giữ ưu thế hệ sinh thái MQTT/Matter và mức tiêu thụ deep sleep. Lựa chọn phụ thuộc bài toán: học tập vs sản phẩm kết nối.",
+      "Kết luận",
+      "Sự cạnh tranh này là tin tốt cho maker: giá giảm, chất lượng tăng, mọi nền tảng đều buộc phải hỗ trợ tốt hơn.",
+    ),
+  },
+  {
+    id: "n-004",
+    slug: "vietnam-iot-agriculture-fund",
+    title: {
+      vi: "Chương trình 500 tỷ đồng hỗ trợ IoT nông nghiệp cho hợp tác xã",
+      en: "500 Billion VND Program Brings IoT Agriculture to Cooperatives",
+    },
+    excerpt: {
+      vi: "Bộ NN&PTNT triển khai giai đoạn 2 chương trình chuyển đổi số, ưu tiên cảm biến và tưới tự động.",
+      en: "The Ministry of Agriculture launches phase 2 of its digital program, prioritizing sensors and automated irrigation.",
+    },
+    category: "iot",
+    image: IMG.projectSmartGreenhouse,
+    source: "Báo Nông nghiệp Việt Nam",
+    publishedAt: "2026-02-15",
+    readingTime: 5,
+    content: sections(
+      "Quy mô chương trình",
+      "Giai đoạn 2 (2026-2028) phân bổ 500 tỷ đồng hỗ trợ hợp tác xã lắp đặt hệ thống cảm biến độ ẩm đất, trạm thời tiết vi mô và tưới tiêu tự động. Mỗi đơn vị nhận hỗ trợ đến 70% chi phí thiết bị.",
+      "Các mô hình cây trồng ưu tiên: rau màu cao điểm, cây ăn quả miền Đông Nam Bộ và lúa ĐBSCL.",
+      "Cơ hội cho doanh nghiệp IoT trong nước",
+      "Yêu cầu thiết bị phải có API mở và lưu trữ dữ liệu tại Việt Nam — điều kiện mà các giải pháp self-hosted như MQTT + Grafana hoàn toàn đáp ứng. SmartIoTVN đã phối hợp ba hợp tác xã thí điểm tại Tiền Giang từ tháng 11/2025.",
+      "Kết luận",
+      "Nông nghiệp IoT chuyển từ thí điểm sang quy mô lớn — thời điểm tốt để kỹ sư nhúng Việt chuẩn bị giải pháp thực địa.",
+    ),
+  },
+  {
+    id: "n-005",
+    slug: "esp32-h2-thread-matter",
+    title: {
+      vi: "ESP32-H2 định vị lại làm bridge Thread-Zigbee giá rẻ",
+      en: "ESP32-H2 Repositioned as the Budget Thread-Zigbee Bridge",
+    },
+    excerpt: {
+      vi: "Chip 802.15.4 của Espressif trở thành lựa chọn phổ biến cho border router và bridge nhà thông minh.",
+      en: "Espressif's 802.15.4 chip is becoming the go-to choice for smart home border routers and bridges.",
+    },
+    category: "esp32",
+    image: IMG.heroSmartCity,
+    source: "Espressif Developer Blog",
+    publishedAt: "2026-02-08",
+    readingTime: 4,
+    content: sections(
+      "Một chip, hai chuẩn mesh",
+      "ESP32-H2 hỗ trợ đồng thời Thread và Zigbee, biến bo mạch 4 USD thành bridge kết nối hàng trăm thiết bị 802.15.4 với mạng Ethernet/Wi-Fi gia đình. Các dự án Home Assistant ZBT-1 thay thế bắt đầu chọn H2 làm nền tảng.",
+      "Dòng chỉ tiêu khi radio hoạt động ~19mA, dùng được cho thiết bị chạy pin với chu kỳ ngủ hợp lý.",
+      "Kịch bản thực tế",
+      "Kết hợp H2 (bridge) + C6 (thiết bị cuối) + S3 (AI biên) là bộ ba đầy đủ cho nhà thông minh 2026 của Espressif, phủ từ radio mesh đến xử lý biên.",
+      "Kết luận",
+      "Hệ sinh thái Espressif ngày càng khép kín về chức năng mà vẫn giữ mức giá maker — lợi thế cạnh tranh khó thay thế.",
+    ),
+  },
+  {
+    id: "n-006",
+    slug: "matter-1.4-what-changes",
+    title: {
+      vi: "Matter 1.4 công bố: Chế độ đa quản trị và cải tiến camera",
+      en: "Matter 1.4 Announced: Multi-Admin Modes and Camera Improvements",
+    },
+    excerpt: {
+      vi: "Bản cập nhật chuẩn nhà thông minh mở rộng hỗ trợ camera, cảm biến nước và quản trị đa nền tảng.",
+      en: "The smart home standard update expands camera support, water sensors and multi-admin management.",
+    },
+    category: "technology",
+    image: IMG.blogSmartHome,
+    source: "CSA Connector",
+    publishedAt: "2026-01-30",
+    readingTime: 5,
+    content: sections(
+      "Điểm mới nổi bật",
+      "Matter 1.4 chuẩn hóa hỗ trợ camera an ninh, cảm biến nước rò rỉ và thiết bị quản lý năng lượng. Chế độ multi-admin được cải tiến giúp thiết bị hoạt động song song trên nhiều nền tảng điều khiển mà không cần thiết lập lại.",
+      "Lịch trình chuyển giao thiết bị cho các OEM bắt đầu từ Q2/2026.",
+      "Với hệ sinh thái ESP32",
+      "Espressif cam kết SDK Matter cập nhật trong vòng 60 ngày sau mỗi bản chuẩn mới — cộng đồng ESP32 thường là một trong những nền tảng đầu tiên dùng thử.",
+      "Kết luận",
+      "Matter đang trưởng thành nhanh: từ ánh đèn ban đầu đến camera và năng lượng — phạm vi nhà thông minh mở rộng đáng kể.",
+    ),
+  },
+  {
+    id: "n-007",
+    slug: "stm32-n6-ai-mcu",
+    title: {
+      vi: "STM32N6 ra mắt: MCU STM32 đầu tiên với NPU tích hợp",
+      en: "STM32N6 Arrives: First STM32 MCU with an Integrated NPU",
+    },
+    excerpt: {
+      vi: "STMicroelectronics mở bán STM32N6 với NPU 600 GOPS, đưa thị giác máy học sâu vào MCU giá dưới 15 USD.",
+      en: "STMicroelectronics ships STM32N6 with a 600-GOPS NPU, bringing deep-learning vision to sub-15-USD MCUs.",
+    },
+    category: "technology",
+    image: IMG.courseStm32,
+    source: "STMicroelectronics News",
+    publishedAt: "2026-01-22",
+    readingTime: 4,
+    content: sections(
+      "NPU trong phân khúc MCU",
+      "STM32N6 tích hợp Neural-ART NPU với hiệu năng 600 GOPS, gấp 300 lần dòng STM32 cũ. ST kèm theo bộ công cụ STM32ModelZoo cho huấn luyện và tối ưu model trực tiếp trên chip.",
+      "Giá tham khảo từ 12-15 USD cho dòng N6 cơ bản.",
+      "Ứng dụng thực tế",
+      "Ứng dụng điển hình: phát hiện lỗi sản phẩm trên băng chuyền, nhận diện người ở cửa, phân loại tại chỗ không cần gửi ảnh lên server. Thách thức lớn nhất hiện là tối ưu bộ nhớ — model phải nén trong vài MB SRAM.",
+      "Kết luận",
+      "STM32N6 mở phân khúc thị giác AI giá rẻ mà trước đây chỉ GPU mới làm được — tin lớn cho ngành công nghiệp Việt Nam đang chuyển đổi số.",
+    ),
+  },
+  {
+    id: "n-008",
+    slug: "esp32-price-drop-2026",
+    title: {
+      vi: "Giá module ESP32 giảm 15% sau khi nhà máy mới đi vào hoạt động",
+      en: "ESP32 Module Prices Drop 15% as New Fab Comes Online",
+    },
+    excerpt: {
+      vi: "Nguồn cung ổn định hơn đẩy giá module ESP32 về mức thấp lịch sử, lợi thế cho nhà sản xuất thiết bị Việt Nam.",
+      en: "A steadier supply pushes ESP32 module prices to record lows, a boon for Vietnamese device makers.",
+    },
+    category: "products",
+    image: IMG.productEsp32,
+    source: "Tin thị trường linh kiện",
+    publishedAt: "2026-01-15",
+    readingTime: 3,
+    content: sections(
+      "Giá về mức thấp lịch sử",
+      "Giá module ESP32-WROOM-32 tại thị trường Việt Nam giảm từ ~45.000₫ xuống ~38.000₫/module với đơn hàng trên 1.000 chiếc sau khi nguồn cung toàn cầu ổn định trở lại.",
+      "Đây là mức thấp nhất kể từ khủng hoảng chip 2021-2022.",
+      "Cơ hội cho thiết bị Made-in-Vietnam",
+      "Chi phí BOM giảm trực tiếp đến giá thành sản phẩm cuối: ổ cắm thông minh, công tắc cảm ứng, bộ điều nhiệt giá rẻ hơn 20-40 nghìn đồng — ngưỡng quan trọng của phân khúc đại chúng.",
+      "Kết luận",
+      "Thời điểm tốt để lên kế hoạch sản xuất hoặc nhập lượng linh kiện dự trữ cho dự án cộng đồng.",
+    ),
+  },
+  {
+    id: "n-009",
+    slug: "ai-iot-edge-analytics-2026",
+    title: {
+      vi: "AI + IoT: Phân tích tại biên trở thành tiêu chuẩn mới của nhà máy",
+      en: "AI + IoT: Edge Analytics Becomes the New Factory Standard",
+    },
+    excerpt: {
+      vi: "Khảo sát 500 nhà máy cho thấy 62% đã chuyển phân tích dữ liệu từ cloud về thiết bị biên.",
+      en: "A survey of 500 factories shows 62% moved analytics from cloud to edge devices.",
+    },
+    category: "ai-iot",
+    image: IMG.newsAiChip,
+    source: "Industry IoT Report",
+    publishedAt: "2026-01-08",
+    readingTime: 6,
+    content: sections(
+      "Xu hướng dịch chuyển về biên",
+      "Lý do hàng đầu: chi phí băng thông và độ trễ quyết định. Phân tích rung động bơm tại chỗ giảm 90% dữ liệu truyền; cảnh báo dừng máy ngay lập tức thay vì chờ vòng quay cloud.",
+      "62% nhà máy khảo sát đã triển khai ít nhất một ứng dụng AI biên trong sản xuất.",
+      "Thách thức kỹ năng",
+      "Nhu cầu kỹ sư vừa hiểu cả ML lẫn hệ nhúng tăng mạnh — đúng lĩnh vực mà khóa học FreeRTOS và ESP32 Bootcamp của SmartIoTVN hướng đến. Kiến thức nền: tối ưu model, quản lý bộ nhớ, RTOS.",
+      "Kết luận",
+      "Edge analytics không thay thế cloud — hai tầng kết hợp thành kiến trúc chuẩn 2026: biên quyết đoán, cloud đào sâu.",
+    ),
+  },
+  {
+    id: "n-010",
+    slug: "thread-momentum-vietnam-2026",
+    title: {
+      vi: "Thread tiếp cận momentum tại Việt Nam qua các dự án chung cư thông minh",
+      en: "Thread Gains Momentum in Vietnam Through Smart Apartment Projects",
+    },
+    excerpt: {
+      vi: "Các chủ đầu tư bắt đầu thử nghiệm Thread cho hệ thống thiết bị trong chung cư — tín hiệu cho hệ sinh thái Matter.",
+      en: "Developers begin piloting Thread for apartment device networks — a signal for the Matter ecosystem.",
+    },
+    category: "iot",
+    image: IMG.heroSmartCity,
+    source: "Tạp chí Xây dựng số",
+    publishedAt: "2025-12-28",
+    readingTime: 4,
+    content: sections(
+      "Thread trong bất động sản Việt",
+      "Hai dự án chung cư tại TP.HCM và Hà Nội triển khai thí điểm Thread cho khóa điện tử và cảm biến chung. Lợi thế: mạng mesh tự phục hồi, không dead spot, thiết bị của nhiều hãng dùng chung mạng.",
+      "Chi phí lắp đặt giảm 18% so với giải pháp proprietary do giảm wiring và hub trung gian.",
+      "Vật cản còn lại",
+      "Thiết bị Thread giá thành vẫn cao hơn Wi-Fi 20-30%, và đội ngũ vận hành tòa nhà cần đào tạo về IP-based network. Hai năm tới là giai đoạn chuyển tiếp.",
+      "Kết luận",
+      "Với maker Việt, thời điểm bắt đầu học Thread/Matter là bây giờ — chuẩn này sẽ phổ biến trong 2-3 năm tới.",
+    ),
+  },
+];

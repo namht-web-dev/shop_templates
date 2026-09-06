@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* Import Tailwind v4 Core */
+@import "tailwindcss";
+
+/* Đăng ký các màu biến CSS với Tailwind v4 để dùng được class border-border, bg-background, text-foreground... */
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-sidebar-background: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-lg: var(--radius);
+}
+
+/* Mặc định Theme IoT (Light Mode) */
+:root {
+  --background: 210 40% 98%;
+  --foreground: 222 47% 8%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 8%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 8%;
+
+  --primary: 160 84% 30%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 174 62% 94%;
+  --secondary-foreground: 174 80% 14%;
+
+  --muted: 210 40% 94%;
+  --muted-foreground: 215 16% 42%;
+
+  --accent: 168 60% 93%;
+  --accent-foreground: 168 80% 12%;
+
+  --destructive: 0 72% 48%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 214 25% 88%;
+  --input: 214 25% 85%;
+  --ring: 160 84% 30%;
+
+  --radius: 0.625rem;
+
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 222 47% 8%;
+  --sidebar-primary: 160 84% 30%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 210 40% 94%;
+  --sidebar-accent-foreground: 222 47% 8%;
+  --sidebar-border: 214 25% 88%;
+  --sidebar-ring: 160 84% 30%;
+}
+
+/* Dark Mode */
+.dark {
+  --background: 222 44% 6%;
+  --foreground: 210 40% 96%;
+
+  --card: 222 40% 9%;
+  --card-foreground: 210 40% 96%;
+
+  --popover: 222 40% 9%;
+  --popover-foreground: 210 40% 96%;
+
+  --primary: 158 70% 45%;
+  --primary-foreground: 222 47% 6%;
+
+  --secondary: 200 30% 14%;
+  --secondary-foreground: 210 40% 92%;
+
+  --muted: 218 28% 14%;
+  --muted-foreground: 215 18% 64%;
+
+  --accent: 200 30% 16%;
+  --accent-foreground: 210 40% 94%;
+
+  --destructive: 0 68% 52%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 218 24% 18%;
+  --input: 218 24% 20%;
+  --ring: 158 70% 45%;
+
+  --sidebar-background: 222 40% 8%;
+  --sidebar-foreground: 210 40% 96%;
+  --sidebar-primary: 158 70% 45%;
+  --sidebar-primary-foreground: 222 47% 6%;
+  --sidebar-accent: 218 28% 14%;
+  --sidebar-accent-foreground: 210 40% 92%;
+  --sidebar-border: 218 24% 18%;
+  --sidebar-ring: 158 70% 45%;
+}
+
+/* Base Styles */
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04';
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Custom Utilities trong Tailwind v4 */
+@utility container-app {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  @media (min-width: 640px) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(to right, hsl(var(--primary)), hsl(var(--ring)));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility circuit-grid {
+  background-image:
+    linear-gradient(to right, hsl(var(--primary) / 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--primary) / 0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
