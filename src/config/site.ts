@@ -27,8 +27,8 @@ export const siteConfig = {
   // Contact
   // =========================
   contact: {
-    email: "contact@example.com",
-    phone: "+84...",
+    email: "smartiotvn.contact@gmail.com",
+    phone: "+84987894774",
   },
 
   // =========================

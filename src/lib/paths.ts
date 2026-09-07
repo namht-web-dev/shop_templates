@@ -22,7 +22,7 @@ export const PATHS = {
   login: "/login",
   register: "/register",
   account: "/account",
-  accountProfile: "/account",
+  accountProfile: "/account/profile",
   accountCourses: "/account/courses",
   accountOrders: "/account/orders",
   accountSettings: "/account/settings",
