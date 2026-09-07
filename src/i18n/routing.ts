@@ -1,6 +1,7 @@
 import { defineRouting } from "next-intl/routing";
 import { createNavigation } from "next-intl/navigation";
 import { SITE_DEFAULT_LOCALE } from "../config/site";
+import { Locale } from "@/src/types";
 
 export const routing = defineRouting({
   locales: ["vi", "en"],
@@ -11,3 +12,6 @@ export const routing = defineRouting({
 
 export const { Link, redirect, usePathname, useRouter } =
   createNavigation(routing);
+export function isLocale(value: string): value is Locale {
+  return routing.locales.includes(value as Locale);
+}

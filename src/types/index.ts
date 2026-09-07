@@ -77,19 +77,22 @@ export interface Paginated<T> {
 
 /* ------------------------------- Blog & News ------------------------------ */
 
-export type BlogCategory =
-  | "iot-basics"
-  | "esp32"
-  | "arduino"
-  | "stm32"
-  | "embedded-c"
-  | "freertos"
-  | "sensors"
-  | "mqtt"
-  | "http"
-  | "wifi"
-  | "ble"
-  | "lora";
+export const BLOG_CATEGORIES = [
+  "iot-basics",
+  "esp32",
+  "arduino",
+  "stm32",
+  "embedded-c",
+  "freertos",
+  "sensors",
+  "mqtt",
+  "http",
+  "wifi",
+  "ble",
+  "lora",
+] as const;
+
+export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
 
 export interface ArticleSection {
   heading: LocalizedString;
