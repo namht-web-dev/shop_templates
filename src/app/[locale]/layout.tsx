@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/src/lib/theme";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LocaleProvider } from "@/src/i18n";
+import { isLocale } from "@/src/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,10 +29,6 @@ type Props = {
     locale: Locale;
   }>;
 };
-
-function isLocale(value: string): value is Locale {
-  return value === "vi" || value === "en";
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale } = await params;
