@@ -23,14 +23,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-type Props = {
+// 1. Chuẩn hóa Type Params cho Next.js Layout Validation
+type LayoutProps = {
   children: React.ReactNode;
   params: Promise<{
-    locale: Locale;
+    locale: string;
   }>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: LayoutProps): Promise<Metadata> {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : SITE_DEFAULT_LOCALE;
 
@@ -41,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     title: {
       default: content.title,
-      template: `%s | ${content.name}`, // Tự động nối tên trang: "Giỏ hàng | Cửa hàng IoT"
+      template: `%s | ${content.name}`,
     },
 
     description: content.description,
@@ -91,7 +94,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function RootLayout({ children, params }: Props) {
+export default async function RootLayout({ children, params }: LayoutProps) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : SITE_DEFAULT_LOCALE;
 
