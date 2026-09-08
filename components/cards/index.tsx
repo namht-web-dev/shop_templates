@@ -8,21 +8,22 @@ import { Badge, RatingStars } from "@/components/shared/primitives";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/src/i18n";
 import type { BlogPost, NewsArticle, Product } from "@/src/types";
+import { localePathNavigateHelper } from "@/src/utils";
+import { PATHS } from "@/src/lib/paths";
 
 /* ------------------------------- ProductCard ------------------------------ */
 
 export function ProductCard({
   product,
-  link,
+  link: productLink,
   onAddToCart,
-  onQuickView,
 }: {
   product: Product;
   link: string;
   onAddToCart?: (product: Product) => void;
   onQuickView?: (product: Product) => void;
 }) {
-  const { t, l, formatPrice } = useI18n();
+  const { t, l, locale, formatPrice } = useI18n();
 
   const onSale =
     product.salePrice !== undefined && product.salePrice < product.price;
@@ -30,6 +31,11 @@ export function ProductCard({
   const discount = onSale
     ? Math.round((1 - product.salePrice! / product.price) * 100)
     : 0;
+
+  const link = localePathNavigateHelper(
+    locale,
+    `${productLink}/${product.slug}`,
+  );
 
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-shadow hover:shadow">
@@ -91,7 +97,7 @@ export function ProductCard({
           )}
         </div>
 
-        <div className="flex gap-2 pt-1">
+        <div className="flex pt-1">
           <button
             type="button"
             disabled={product.stock === 0}
@@ -102,7 +108,7 @@ export function ProductCard({
             {t("common.addToCart")}
           </button>
 
-          <Link
+          {/* <Link
             href={link}
             onClick={(event) => {
               if (onQuickView) {
@@ -113,7 +119,7 @@ export function ProductCard({
             className="inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors hover:bg-accent"
           >
             {t("common.quickView")}
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>

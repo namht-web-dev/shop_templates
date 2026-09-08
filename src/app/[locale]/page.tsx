@@ -18,21 +18,27 @@ import { ProductCardWrapper } from "@/components/home/ProductCardWrapper";
 import { BlogService, NewsService, ProductService } from "@/src/services";
 import { PATHS } from "@/src/lib/paths";
 import { IMG } from "@/src/lib/images";
-import { BlogPost, Product } from "@/src/types";
-import { getLocale, getTranslations } from "next-intl/server";
+import { BlogPost, Locale, Product } from "@/src/types";
+import { getTranslations } from "next-intl/server";
+import { localePathNavigateHelper } from "@/src/utils";
 
 const PATH_ICONS = [BookOpen, Zap, Cpu, Radio, Wifi, Layers, CheckCircle2];
 
-export default async function HomePage() {
-  // 1. Fetch dữ liệu song song trực tiếp trên Server
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
 
-  const [productsRes, articles, news, t, locale] = await Promise.all([
+  const [productsRes, articles, news] = await Promise.all([
     ProductService.getProducts({ sort: "popular", pageSize: 8 }),
     BlogService.getFeaturedPosts(3),
     NewsService.getLatest(3),
-    getTranslations(), // Lấy hàm dịch thuật t() trên Server
-    getLocale(),
   ]);
+  const t = await getTranslations({
+    locale,
+  });
 
   const products = productsRes.items;
 
@@ -75,7 +81,9 @@ export default async function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="gap-2">
-                <Link href={`/${locale}${PATHS.courses}`}>
+                <Link
+                  href={`${localePathNavigateHelper(locale, PATHS.courses)}`}
+                >
                   {t("home.exploreCourses")}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
@@ -86,7 +94,7 @@ export default async function HomePage() {
                 variant="outline"
                 className="gap-2 bg-background/70 backdrop-blur"
               >
-                <Link href={`/${locale}${PATHS.shop}`}>
+                <Link href={`${localePathNavigateHelper(locale, PATHS.shop)}`}>
                   <Cpu className="h-4 w-4" aria-hidden="true" />
                   {t("home.shopProducts")}
                 </Link>

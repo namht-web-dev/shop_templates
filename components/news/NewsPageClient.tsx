@@ -18,6 +18,7 @@ import { EmptyState, ErrorState } from "@/components/shared/states";
 import { useI18n } from "@/src/i18n";
 import { PATHS } from "@/src/lib/paths";
 import type { NewsArticle, NewsCategory } from "@/src/types";
+import { localePathNavigateHelper } from "@/src/utils";
 
 type NewsPageClientProps = {
   locale: string;
@@ -33,6 +34,7 @@ type NewsPageClientProps = {
 const ALL = "all" as const;
 
 export default function NewsPageClient({
+  locale,
   news,
   category,
   page,
@@ -153,7 +155,10 @@ export default function NewsPageClient({
               <NewsCard
                 key={article.id}
                 article={article}
-                link={PATHS.newsDetail(article.slug)}
+                link={localePathNavigateHelper(
+                  locale,
+                  PATHS.newsDetail(article.slug),
+                )}
               />
             ))}
           </div>

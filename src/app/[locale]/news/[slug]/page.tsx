@@ -68,6 +68,10 @@ export default async function NewsArticlePage({
     locale,
     namespace: "news",
   });
+  const tCategories = await getTranslations({
+    locale,
+    namespace: "newsCategories",
+  });
 
   const commonT = await getTranslations({
     locale,
@@ -133,7 +137,7 @@ export default async function NewsArticlePage({
 
         <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
           {/* Category */}
-          <Badge variant="outline">{t(`categories.${article.category}`)}</Badge>
+          <Badge variant="outline">{tCategories(`${article.category}`)}</Badge>
 
           {/* Date */}
           <span className="inline-flex items-center gap-1.5">
@@ -226,7 +230,7 @@ export default async function NewsArticlePage({
 
                   <div className="space-y-2 p-4">
                     <p className="text-xs font-bold uppercase tracking-wider text-destructive">
-                      {t(`categories.${related.category}`)}
+                      {tCategories(`${related.category}`)}
                     </p>
 
                     <h3 className="line-clamp-2 font-semibold leading-snug transition-colors group-hover:text-primary">

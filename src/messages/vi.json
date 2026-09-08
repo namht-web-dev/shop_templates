@@ -137,6 +137,11 @@
     "step7": "Dự án IoT thực tế"
   },
   "shop": {
+    "title0": "Cửa hàng",
+    "subtitle0": "Tìm kiếm các sản phẩm phù hợp với nhu cầu của bạn",
+    "searchResult": "Tìm thấy {total} kết quả",
+    "emptyTitle0": "Không tìm thấy sản phẩm",
+    "emptyDesc0": "Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm của bạn.",
     "title": "Cửa hàng sản phẩm IoT",
     "subtitle": "Bo mạch phát triển, cảm biến, module và bộ kit — tuyển chọn cho maker và kỹ sư.",
     "searchPlaceholder": "Tìm sản phẩm…",

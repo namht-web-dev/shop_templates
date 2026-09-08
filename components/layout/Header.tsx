@@ -95,12 +95,18 @@ export function Header() {
     }
     return pathname === fullPath;
   };
-
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/85 backdrop-blur supports-backdrop-filter:bg-background/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
         {/* Brand */}
-        <Link href={PATHS.home} className="flex shrink-0 items-center gap-2">
+        <Link
+          href={
+            locale === SITE_DEFAULT_LOCALE
+              ? PATHS.home
+              : `/${locale}${PATHS.home}`
+          }
+          className="flex shrink-0 items-center gap-2"
+        >
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Cpu className="h-5 w-5" aria-hidden="true" />
           </span>
@@ -116,12 +122,15 @@ export function Header() {
         >
           {navItems.map((item) => {
             const href = item.path;
+            const localizedHref =
+              locale === SITE_DEFAULT_LOCALE ? href : `/${locale}${href}`;
+
             const active = isLinkActive(item.path);
 
             return (
               <Link
-                key={item.path}
-                href={href}
+                key={`/${locale}${item.path}`}
+                href={localizedHref}
                 className={cn(
                   "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
                   active ? "text-primary font-semibold" : "text-foreground/80",
@@ -294,12 +303,15 @@ export function Header() {
           <div className="mx-auto grid max-w-7xl gap-1 px-4 py-3 sm:px-6">
             {navItems.map((item) => {
               const href = item.path;
+              const localizedHref =
+                locale === SITE_DEFAULT_LOCALE ? href : `/${locale}${href}`;
+
               const active = isLinkActive(item.path);
 
               return (
                 <Link
                   key={item.path}
-                  href={href}
+                  href={localizedHref}
                   className={cn(
                     "rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-accent",
                     active

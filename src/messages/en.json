@@ -137,6 +137,11 @@
     "step7": "Real IoT Projects"
   },
   "shop": {
+    "title0": "Store",
+    "subtitle0": "Find products that fit your needs",
+    "searchResult": "Found {total} results",
+    "emptyTitle0": "No products found",
+    "emptyDesc0": "Try changing your filters or search keywords.",
     "title": "IoT Product Store",
     "subtitle": "Development boards, sensors, modules and kits — hand-picked for makers and engineers.",
     "searchPlaceholder": "Search products…",

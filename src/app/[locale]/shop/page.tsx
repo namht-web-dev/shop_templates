@@ -8,8 +8,13 @@ import { ShopPagination } from "@/components/shop/ShopPagination";
 import { ShopSort } from "@/components/shop/ShopSort";
 import type { ProductCategory, ProductSort } from "@/src/types";
 import { PAGE_SIZE } from "@/src/config/site";
+import { getTranslations } from "next-intl/server";
+import { PATHS } from "@/src/lib/paths";
 
 type PageProps = {
+  params: Promise<{
+    locale: string;
+  }>;
   searchParams: Promise<{
     search?: string;
     category?: string;
@@ -43,15 +48,23 @@ export async function generateMetadata({
   };
 }
 
-export default async function ShopPage({ searchParams }: PageProps) {
+export default async function ShopPage({
+  params: localePrams,
+  searchParams,
+}: PageProps) {
   // Unwrapping Async searchParams in Next.js 16
   const params = await searchParams;
+  const { locale } = await localePrams;
 
   const search = params.search || "";
   const category = (params.category as ProductCategory) || "all";
   const sort = (params.sort as ProductSort) || "popular";
   const page = Number(params.page) || 1;
   const maxPrice = params.maxPrice ? Number(params.maxPrice) : undefined;
+  const t = await getTranslations({
+    locale,
+    namespace: "shop",
+  });
 
   // Parallel Data Fetching on the Server
   const [bounds, categories, products] = await Promise.all([
@@ -71,16 +84,14 @@ export default async function ShopPage({ searchParams }: PageProps) {
     <div className="container-app py-10">
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Cửa hàng
+          {t("title0")}
         </h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Tìm kiếm các sản phẩm phù hợp với nhu cầu của bạn
-        </p>
+        <p className="mt-2 max-w-2xl text-muted-foreground">{t("subtitle0")}</p>
       </header>
 
       <div className="mb-6 flex items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground">
-          Tìm thấy {products.total} kết quả
+          {t("searchResult", { total: products.total })}
         </p>
         <ShopSort currentSort={sort} />
       </div>
@@ -105,8 +116,8 @@ export default async function ShopPage({ searchParams }: PageProps) {
           <Suspense fallback={<CardGridSkeleton count={8} aspect="square" />}>
             {products.items.length === 0 ? (
               <EmptyState
-                title="Không tìm thấy sản phẩm"
-                description="Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm của bạn."
+                title={t("emptyTitle0")}
+                description={t("emptyDesc0")}
               />
             ) : (
               <>
@@ -115,7 +126,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
                     <ProductCard
                       key={product.id}
                       product={product}
-                      link={`/shop/${product.slug}`}
+                      link={PATHS.shop}
                     />
                   ))}
                 </div>
