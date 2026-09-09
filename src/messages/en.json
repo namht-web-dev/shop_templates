@@ -60,7 +60,8 @@
     "noResults": "No results found",
     "noResultsDesc": "Try a different keyword or remove some filters.",
     "whatYouLearn": "What You Will Learn",
-    "requirements": "Requirements"
+    "requirements": "Requirements",
+    "apply": "Apply"
   },
   "levels": {
     "beginner": "Beginner",
@@ -159,7 +160,9 @@
     "emptyDesc": "Try widening the price range or clearing the category filter.",
     "clearFilters": "Clear filters",
     "filters": "Filters",
-    "priceTo": "to"
+    "priceTo": "to",
+    "minPrice": "Minimum price",
+    "maxPrice": "Maximum price"
   },
   "product": {
     "description": "Description",
@@ -322,7 +325,7 @@
     "subtitle": "Tutorials, deep dives and practical guides on embedded systems and connected devices.",
     "searchPlaceholder": "Search articles…",
     "category": "Category",
-    "allCategories": "All",
+    "allCategories": "All Categories",
     "featured": "Featured Article",
     "emptyTitle": "No articles found",
     "emptyDesc": "Try another keyword or category.",

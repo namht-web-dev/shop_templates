@@ -74,7 +74,7 @@ export default function LoginForm() {
 
       toast.success(t("auth.loggedIn"));
 
-      router.push(PATHS.account);
+      router.push(`/${locale}${PATHS.account}`);
     } catch {
       setError(t("common.errorDescription"));
     } finally {
@@ -93,7 +93,7 @@ export default function LoginForm() {
 
       toast.success(t("auth.loggedIn"));
 
-      router.push(PATHS.account);
+      router.push(`/${locale}${PATHS.account}`);
     } catch {
       setError(t("common.errorDescription"));
     } finally {
@@ -142,18 +142,14 @@ export default function LoginForm() {
 
   if (user) {
     return (
-      <AuthShell
-        locale={locale}
-        title={t("auth.alreadyLoggedIn")}
-        subtitle={user.email}
-      >
+      <AuthShell title={t("auth.alreadyLoggedIn")} subtitle={user.email}>
         <div className="grid gap-3">
-          <Button onClick={() => router.push(PATHS.account)}>
+          <Button onClick={() => router.push(`/${locale}${PATHS.account}`)}>
             {t("account.title")}
           </Button>
 
           <Button variant="outline" asChild>
-            <Link href={PATHS.home}>{t("nav.home")}</Link>
+            <Link href={`/${locale}${PATHS.home}`}>{t("nav.home")}</Link>
           </Button>
         </div>
       </AuthShell>
@@ -164,7 +160,6 @@ export default function LoginForm() {
 
   return (
     <AuthShell
-      locale={locale}
       title={isLoginView ? t("auth.welcomeBack") : t("auth.resetTitle")}
       subtitle={isLoginView ? t("auth.welcomeBackDesc") : t("auth.resetDesc")}
     >
@@ -274,7 +269,7 @@ export default function LoginForm() {
       <p className="mt-6 text-center text-sm text-muted-foreground">
         {t("auth.noAccount")}{" "}
         <Link
-          href={PATHS.register}
+          href={`/${locale}${PATHS.register}`}
           className="font-medium text-primary hover:underline"
         >
           {t("auth.createAccount")}

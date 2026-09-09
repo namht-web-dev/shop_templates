@@ -1,55 +1,68 @@
-import type { Metadata } from "next";
+"use client";
+import "./globals.css";
+
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
-import { Compass } from "lucide-react";
-
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Home, FileQuestion } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PATHS } from "@/src/lib/paths";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-type NotFoundPageProps = {
-  params: Promise<{
-    locale: string;
-  }>;
-};
+export default function NotFound() {
+  const router = useRouter();
 
-export async function generateMetadata({
-  params,
-}: NotFoundPageProps): Promise<Metadata> {
-  const { locale } = await params;
-
-  const t = await getTranslations({
-    locale,
-    namespace: "notFound",
-  });
-
-  return {
-    title: t("title"),
-    description: t("desc"),
-  };
-}
-
-export default async function NotFoundPage({ params }: NotFoundPageProps) {
   return (
-    <div className="container-app flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
-      <span className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent">
-        <Compass className="h-8 w-8 text-primary" aria-hidden="true" />
-      </span>
+    <div className="min-h-screen w-full flex items-center justify-center bg-background p-4 relative overflow-hidden">
+      {/* Hiệu ứng đốm sáng nền (Background Glow Effect) */}
+      <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
 
-      <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-        404
-      </p>
+      <Card className="max-w-md w-full text-center border-border/50 shadow-xl backdrop-blur-sm bg-card/80 z-10">
+        <CardHeader className="flex flex-col items-center pb-2">
+          {/* Badge & Icon */}
+          <Badge variant="outline" className="mb-4 px-3 py-1 text-xs gap-1">
+            <FileQuestion className="w-3.5 h-3.5 text-muted-foreground" />
+            404 Error
+          </Badge>
 
-      <h1 className="mt-2 text-3xl font-bold tracking-tight">
-        Không tìm thấy trang
-      </h1>
+          {/* Con số 404 ấn tượng */}
+          <h1 className="text-8xl font-black tracking-tight text-primary select-none drop-shadow-sm">
+            404
+          </h1>
+        </CardHeader>
 
-      <p className="mt-3 max-w-md text-muted-foreground">
-        Trang bạn tìm không tồn tại hoặc đã được di chuyển.
-      </p>
+        <CardContent className="space-y-3 pt-2">
+          <h2 className="text-2xl font-bold tracking-tight">Page not Found</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            The page you're looking for doesn't exist or has been moved.
+          </p>
+        </CardContent>
 
-      <Button asChild className="mt-8">
-        <Link href={`${PATHS.home}`}>Về trang chủ</Link>
-      </Button>
+        <CardFooter className="flex flex-col sm:flex-row gap-3 pt-4 justify-center">
+          {/* Nút Quay lại */}
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto gap-2"
+            onClick={() => router.back()}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+
+          {/* Nút Về trang chủ */}
+          <Button asChild className="w-full sm:w-auto gap-2">
+            <Link href="/">
+              <Home className="w-4 h-4" />
+              Back to homepage
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

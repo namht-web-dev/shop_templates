@@ -45,7 +45,7 @@ type AccountLayoutProps = {
 };
 
 export function AccountLayout({ children }: AccountLayoutProps) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -57,11 +57,11 @@ export function AccountLayout({ children }: AccountLayoutProps) {
   const handleLogout = () => {
     logout();
     toast.success(t("auth.loggedOut"));
-    router.push(PATHS.home);
+    router.push(`/${locale}${PATHS.home}`);
   };
 
   const isActive = (path: string, end: boolean) => {
-    return pathname === path;
+    return pathname === `/${locale}${path}`;
   };
 
   if (!user) {
@@ -107,7 +107,7 @@ export function AccountLayout({ children }: AccountLayoutProps) {
         <aside>
           <nav className="flex gap-1 overflow-x-auto rounded-xl border p-2 lg:flex-col lg:overflow-visible">
             {NAV_ITEMS.map((item) => {
-              const href = item.to;
+              const href = `/${locale}${item.to}`;
               const active = isActive(item.to, item.end);
 
               return (

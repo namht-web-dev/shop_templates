@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { useI18n } from "@/src/i18n";
 import type { BlogPost, NewsArticle, Product } from "@/src/types";
 import { localePathNavigateHelper } from "@/src/utils";
-import { PATHS } from "@/src/lib/paths";
 
 /* ------------------------------- ProductCard ------------------------------ */
 

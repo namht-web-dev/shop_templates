@@ -60,7 +60,8 @@
     "noResults": "Không tìm thấy kết quả",
     "noResultsDesc": "Thử từ khóa khác hoặc bỏ bớt bộ lọc.",
     "whatYouLearn": "Bạn sẽ học được gì",
-    "requirements": "Yêu cầu"
+    "requirements": "Yêu cầu",
+    "apply": "Áp dụng"
   },
   "levels": {
     "beginner": "Người mới bắt đầu",
@@ -159,7 +160,9 @@
     "emptyDesc": "Thử mở rộng khoảng giá hoặc bỏ lọc danh mục.",
     "clearFilters": "Xóa bộ lọc",
     "filters": "Bộ lọc",
-    "priceTo": "đến"
+    "priceTo": "đến",
+    "minPrice": "Giá thấp nhất",
+    "maxPrice": "Giá cao nhất"
   },
   "product": {
     "description": "Mô tả",

@@ -1,15 +1,16 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ProductService } from "@/src/services";
-import { ProductCard } from "@/components/cards";
 import { CardGridSkeleton, EmptyState } from "@/components/shared/states";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { ShopPagination } from "@/components/shop/ShopPagination";
 import { ShopSort } from "@/components/shop/ShopSort";
-import type { ProductCategory, ProductSort } from "@/src/types";
-import { PAGE_SIZE } from "@/src/config/site";
+import type { Locale, ProductCategory, ProductSort } from "@/src/types";
+import { PAGE_SIZE, SITE_DEFAULT_LOCALE, siteConfig } from "@/src/config/site";
 import { getTranslations } from "next-intl/server";
 import { PATHS } from "@/src/lib/paths";
+import { isLocale } from "@/src/utils";
+import { ProductCardWrapper } from "@/components/home/ProductCardWrapper";
 
 type PageProps = {
   params: Promise<{
@@ -26,16 +27,24 @@ type PageProps = {
 
 // Next.js 16 SEO Metadata Standard
 export async function generateMetadata({
+  params: localeParams,
   searchParams,
 }: PageProps): Promise<Metadata> {
   const params = await searchParams;
+  const { locale: rawLocale } = await localeParams;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : SITE_DEFAULT_LOCALE;
+
+  const content = siteConfig.storeTranslations[locale];
 
   const hasFilters =
     params.search || params.sort || params.page || params.maxPrice;
 
   return {
-    title: "Cửa hàng | Tên Website",
-    description: "Khám phá các sản phẩm chất lượng...",
+    title: {
+      default: content.title,
+      template: `%s | ${content.name}`,
+    },
+    description: content.description,
     robots: hasFilters
       ? {
           index: false,
@@ -123,7 +132,7 @@ export default async function ShopPage({
               <>
                 <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                   {products.items.map((product) => (
-                    <ProductCard
+                    <ProductCardWrapper
                       key={product.id}
                       product={product}
                       link={PATHS.shop}

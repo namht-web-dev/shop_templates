@@ -31,8 +31,9 @@ export function ShopFilters({
 
   const [searchInput, setSearchInput] = useState(currentSearch);
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const [draftMin, setDraftMin] = useState(bounds.min);
   const effectiveMax = currentMaxPrice ?? bounds.max;
+  const [draftMax, setDraftMax] = useState(effectiveMax);
 
   const updateParams = (newParams: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -51,21 +52,46 @@ export function ShopFilters({
     });
   };
 
-  // Debounce đẩy từ khóa lên URL khi user gõ
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (searchInput !== currentSearch) {
-        updateParams({ search: searchInput });
-      }
-    }, 350);
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchInput, currentSearch]);
+    setDraftMin(bounds.min);
+    setDraftMax(effectiveMax);
+  }, [bounds.min, effectiveMax]);
 
   const clearFilters = () => {
     setSearchInput("");
+    setDraftMin(bounds.min);
+    setDraftMax(bounds.max);
     startTransition(() => {
       router.push(pathname);
+    });
+  };
+
+  const handleSliderChange = (values: number[]) => {
+    const max = values[0];
+
+    setDraftMax(Math.max(draftMin, max));
+  };
+
+  const handleMinChange = (value: string) => {
+    const min = Number(value);
+
+    if (Number.isNaN(min)) return;
+
+    setDraftMin(Math.min(min, draftMax));
+  };
+
+  const handleMaxChange = (value: string) => {
+    const max = Number(value);
+
+    if (Number.isNaN(max)) return;
+
+    setDraftMax(Math.max(max, draftMin));
+  };
+
+  const handleApplyPrice = () => {
+    updateParams({
+      minPrice: draftMin.toString(),
+      maxPrice: draftMax.toString(),
     });
   };
 
@@ -75,13 +101,33 @@ export function ShopFilters({
         <h3 className="mb-3 text-sm font-semibold">
           {t("shop.searchPlaceholder")}
         </h3>
-        <Input
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          placeholder={t("shop.searchPlaceholder")}
-        />
-      </div>
 
+        <div className="flex gap-2">
+          <Input
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder={t("shop.searchPlaceholder")}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                updateParams({
+                  search: searchInput.trim(),
+                });
+              }
+            }}
+          />
+        </div>
+        <Button
+          type="button"
+          className="w-full mt-3"
+          onClick={() => {
+            updateParams({
+              search: searchInput.trim(),
+            });
+          }}
+        >
+          {t("common.apply")}
+        </Button>
+      </div>
       <div>
         <h3 className="mb-3 text-sm font-semibold">{t("shop.category")}</h3>
         <div className="space-y-1">
@@ -115,19 +161,62 @@ export function ShopFilters({
 
       <div>
         <h3 className="mb-3 text-sm font-semibold">{t("shop.priceRange")}</h3>
+
         <Slider
           min={bounds.min}
           max={bounds.max}
           step={10}
-          value={[effectiveMax]}
-          onValueChange={(values) =>
-            updateParams({ maxPrice: values[0].toString() })
-          }
+          value={[draftMax]}
+          onValueChange={handleSliderChange}
         />
-        <p className="mt-2 text-sm text-muted-foreground tabular-nums">
-          {formatPrice(bounds.min)} {t("shop.priceTo")}{" "}
-          {formatPrice(effectiveMax)}
-        </p>
+
+        <div className="mt-3 flex items-center gap-2">
+          <div className="flex-1">
+            <label className="mb-1 block text-xs text-muted-foreground">
+              {t("shop.minPrice")}
+            </label>
+
+            <Input
+              type="number"
+              min={bounds.min}
+              max={draftMax}
+              value={draftMin}
+              onChange={(e) => handleMinChange(e.target.value)}
+            />
+          </div>
+
+          <span className="mt-6 text-muted-foreground">-</span>
+
+          <div className="flex-1">
+            <label className="mb-1 block text-xs text-muted-foreground">
+              {t("shop.maxPrice")}
+            </label>
+
+            <Input
+              type="number"
+              min={draftMin}
+              max={bounds.max}
+              value={draftMax}
+              onChange={(e) => handleMaxChange(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="mt-3 flex items-center justify-between">
+          <p className="text-sm text-muted-foreground tabular-nums">
+            {formatPrice(draftMin)} {t("shop.priceTo")} {formatPrice(draftMax)}
+          </p>
+        </div>
+        <div>
+          <Button
+            type="button"
+            className="w-full"
+            size="default"
+            onClick={handleApplyPrice}
+          >
+            {t("common.apply")}
+          </Button>
+        </div>
       </div>
 
       <Button

@@ -137,6 +137,58 @@ export const siteConfig = {
   // =========================
   translations: {
     vi: {
+      name: "Smart IoT Việt Nam",
+      title: "Smart IoT Việt Nam - Kiến thức, Khóa học & Linh kiện IoT",
+      description:
+        "Nền tảng IoT cung cấp kiến thức, khóa học, hướng dẫn dự án và linh kiện ESP32, Arduino cùng các thiết bị điện tử cho người mới bắt đầu và lập trình viên.",
+      keywords: [
+        "iot",
+        "internet of things",
+        "smart iot",
+        "iot việt nam",
+        "học iot",
+        "khóa học iot",
+        "lập trình iot",
+        "esp32",
+        "arduino",
+        "lập trình esp32",
+        "lập trình arduino",
+        "linh kiện điện tử",
+        "thiết bị iot",
+        "dự án iot",
+        "kiến thức iot",
+        "hướng dẫn iot",
+      ],
+    },
+
+    en: {
+      name: "Smart IoT Vietnam",
+      title: "Smart IoT Vietnam - IoT Courses, Knowledge & Components",
+      description:
+        "An IoT platform providing tutorials, courses, project guides, ESP32 and Arduino components, and electronics resources for beginners and developers.",
+      keywords: [
+        "iot",
+        "internet of things",
+        "smart iot",
+        "iot vietnam",
+        "iot courses",
+        "learn iot",
+        "iot tutorials",
+        "iot programming",
+        "esp32",
+        "arduino",
+        "esp32 programming",
+        "arduino programming",
+        "electronics components",
+        "iot devices",
+        "iot projects",
+        "iot knowledge",
+        "iot guides",
+      ],
+    },
+  },
+  storeTranslations: {
+    vi: {
       name: "Cửa hàng IoT",
       title: "Cửa hàng linh kiện IoT chính hãng",
       description:

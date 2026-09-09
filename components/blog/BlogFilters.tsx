@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 
 import type { BlogCategory } from "@/src/types";
 import { usePathname, useRouter } from "next/navigation";
+import { useI18n } from "@/src/i18n";
 
 const ALL = "all" as const;
 
@@ -35,26 +36,8 @@ export function BlogFilters({
 }: BlogFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
-
+  const { t } = useI18n();
   const [searchInput, setSearchInput] = useState(search);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const value = searchInput.trim();
-
-      if (value === search) {
-        return;
-      }
-
-      updateQuery({
-        search: value || undefined,
-        page: 1,
-      });
-    }, 350);
-
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchInput, search]);
 
   function updateQuery(updates: Record<string, string | number | undefined>) {
     const params = new URLSearchParams();
@@ -104,9 +87,15 @@ export function BlogFilters({
       {/* Search */}
       <Input
         value={searchInput}
-        onChange={(event) => setSearchInput(event.target.value)}
-        placeholder="Search..."
-        className="max-w-xs"
+        onChange={(e) => setSearchInput(e.target.value)}
+        placeholder={t("blog.searchPlaceholder")}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            updateQuery({
+              search: searchInput.trim(),
+            });
+          }
+        }}
       />
 
       {/* Category */}
@@ -116,7 +105,7 @@ export function BlogFilters({
         </SelectTrigger>
 
         <SelectContent>
-          <SelectItem value={ALL}>All categories</SelectItem>
+          <SelectItem value={ALL}>{t("blog.allCategories")}</SelectItem>
 
           {categories.map((cat) => (
             <SelectItem key={cat} value={cat}>
@@ -128,7 +117,7 @@ export function BlogFilters({
 
       {/* Count */}
       <span className="ml-auto text-sm text-muted-foreground">
-        {total} articles
+        {t("blog.articlesCount", { count: total })}
       </span>
 
       {/* Pagination */}
@@ -147,7 +136,7 @@ export function BlogFilters({
               })
             }
           >
-            Previous
+            {t("common.prev")}
           </Button>
 
           <span className="px-3 text-sm text-muted-foreground">
@@ -164,7 +153,7 @@ export function BlogFilters({
               })
             }
           >
-            Next
+            {t("common.next")}
           </Button>
         </nav>
       )}

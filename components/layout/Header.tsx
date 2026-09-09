@@ -85,7 +85,7 @@ export function Header() {
 
   const handleLogout = () => {
     logout();
-    router.push(PATHS.home);
+    router.push(`/${locale}${PATHS.home}`);
   };
 
   const isLinkActive = (path: string) => {
@@ -203,7 +203,7 @@ export function Header() {
 
           {/* Cart */}
           <Link
-            href={PATHS.cart}
+            href={`/${locale}${PATHS.cart}`}
             className="relative inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-accent"
             aria-label={t("header.cart")}
           >
@@ -237,24 +237,32 @@ export function Header() {
                   {user.email}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push(PATHS.account)}>
+                <DropdownMenuItem
+                  onClick={() => router.push(`/${locale}${PATHS.account}`)}
+                >
                   <User className="h-4 w-4 mr-2" aria-hidden="true" />
                   {t("account.profile")}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => router.push(PATHS.accountCourses)}
+                  onClick={() =>
+                    router.push(`/${locale}${PATHS.accountCourses}`)
+                  }
                 >
                   <ShoppingBag className="h-4 w-4 mr-2" aria-hidden="true" />
                   {t("account.myCourses")}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => router.push(PATHS.accountOrders)}
+                  onClick={() =>
+                    router.push(`/${locale}${PATHS.accountOrders}`)
+                  }
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" aria-hidden="true" />
                   {t("account.myOrders")}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => router.push(PATHS.accountSettings)}
+                  onClick={() =>
+                    router.push(`/${locale}${PATHS.accountSettings}`)
+                  }
                 >
                   <Settings className="h-4 w-4 mr-2" aria-hidden="true" />
                   {t("account.settings")}

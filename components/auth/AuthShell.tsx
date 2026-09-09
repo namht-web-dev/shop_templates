@@ -31,20 +31,8 @@ type PasswordFieldProps = {
   autoComplete?: string;
 };
 
-type LocalePathProps = {
-  locale: string;
-};
-
-function getLocalePath(locale: string, path: string) {
-  return `/${locale}${path === "/" ? "" : path}`;
-}
-
-export function AuthShell({
-  title,
-  subtitle,
-  children,
-}: AuthShellProps & LocalePathProps) {
-  const { t } = useI18n();
+export function AuthShell({ title, subtitle, children }: AuthShellProps) {
+  const { t, locale } = useI18n();
 
   const sidePoints = [
     t("auth.sidePoint1"),
@@ -52,7 +40,7 @@ export function AuthShell({
     t("auth.sidePoint3"),
   ];
 
-  const homePath = getLocalePath(arguments[0]?.locale ?? "vi", PATHS.home);
+  const homePath = `/${locale}`;
 
   return (
     <div className="container-app flex items-center justify-center py-10 lg:py-16">
