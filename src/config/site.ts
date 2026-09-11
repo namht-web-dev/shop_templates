@@ -14,7 +14,7 @@ export const siteConfig = {
   // Site identity
   // =========================
   url: "https://example.com",
-  logo: "/logo.png",
+  logo: "/logoRounded512.png",
   ogImage: "/og-image.png",
 
   // =========================

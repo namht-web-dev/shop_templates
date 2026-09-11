@@ -4,11 +4,12 @@
  * App footer: brand, link columns, contact and demo notice.
  */
 import Link from "next/link";
-import { Cpu, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 import { useI18n } from "@/src/i18n";
 import { PATHS } from "@/src/lib/paths";
 import { siteConfig } from "@/src/config/site";
+import Image from "next/image";
 
 export function Footer() {
   const { t, locale } = useI18n();
@@ -33,31 +34,31 @@ export function Footer() {
     {
       key: "login",
       label: t("auth.loginButton"),
-      path: PATHS.login,
+      path: `/${locale}${PATHS.login}`,
       enabled: siteConfig.features.authentication,
     },
     {
       key: "about",
       label: t("footer.aboutLink"),
-      path: PATHS.about,
+      path: `/${locale}${PATHS.about}`,
       enabled: true,
     },
     {
       key: "faq",
       label: t("footer.faq"),
-      path: PATHS.about,
+      path: `/${locale}${PATHS.about}`,
       enabled: true,
     },
     {
       key: "shipping",
       label: t("footer.shipping"),
-      path: PATHS.about,
+      path: `/${locale}${PATHS.about}`,
       enabled: siteConfig.features.shop,
     },
     {
       key: "privacy",
       label: t("footer.privacy"),
-      path: PATHS.about,
+      path: `/${locale}${PATHS.about}`,
       enabled: true,
     },
   ].filter((link) => link.enabled);
@@ -71,13 +72,19 @@ export function Footer() {
           {/* Brand & Contact */}
           <div className="lg:col-span-2">
             <Link href={PATHS.home} className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Cpu className="h-5 w-5" aria-hidden="true" />
-              </span>
+              <div className="flex items-center gap-2">
+                <Image
+                  src={`${siteConfig.logo}`}
+                  alt="SmartIoTVN"
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 object-contain"
+                />
 
-              <span className="text-lg font-bold tracking-tight">
-                {site.name}
-              </span>
+                <span className="hidden text-lg font-bold tracking-tight sm:block">
+                  Smart<span className="text-primary">IoT</span>VN
+                </span>
+              </div>
             </Link>
 
             <p className="mt-3 max-w-sm text-sm text-muted-foreground">
@@ -124,7 +131,7 @@ export function Footer() {
               {exploreLinks.map((link) => (
                 <li key={link.key}>
                   <Link
-                    href={link.path}
+                    href={`/${locale}${link.path}`}
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {link.label}
@@ -142,7 +149,7 @@ export function Footer() {
               {knowledgeLinks.map((link) => (
                 <li key={link.key}>
                   <Link
-                    href={link.path}
+                    href={`/${locale}${link.path}`}
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {link.label}
@@ -160,7 +167,7 @@ export function Footer() {
               {supportLinks.map((link) => (
                 <li key={link.key}>
                   <Link
-                    href={link.path}
+                    href={`${link.path}`}
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {link.label}

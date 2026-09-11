@@ -125,7 +125,7 @@ export default async function HomePage({
               <ProductCardWrapper
                 key={product.id}
                 product={product}
-                link={`/${locale}${PATHS.shopProduct(product.slug)}`}
+                link={`/${locale}${PATHS.shop}`}
               />
             ))}
           </div>

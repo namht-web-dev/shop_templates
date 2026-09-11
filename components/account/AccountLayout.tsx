@@ -12,6 +12,7 @@ import { useAuthStore } from "@/src/store";
 import { useI18n } from "@/src/i18n";
 import { PATHS } from "@/src/lib/paths";
 import { cn } from "@/lib/utils";
+import { SITE_DEFAULT_LOCALE } from "@/src/config/site";
 
 const NAV_ITEMS = [
   {
@@ -61,7 +62,9 @@ export function AccountLayout({ children }: AccountLayoutProps) {
   };
 
   const isActive = (path: string, end: boolean) => {
-    return pathname === `/${locale}${path}`;
+    const comparePath =
+      locale === SITE_DEFAULT_LOCALE ? path : `/${locale}${path}`;
+    return pathname === comparePath;
   };
 
   if (!user) {

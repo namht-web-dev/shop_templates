@@ -9,7 +9,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronDown,
-  Cpu,
   Globe,
   LogOut,
   Menu,
@@ -39,6 +38,7 @@ import { PATHS } from "@/src/lib/paths";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/src/types";
 import { SITE_DEFAULT_LOCALE, siteConfig } from "@/src/config/site";
+import Image from "next/image";
 
 // Hook chuẩn kiểm tra mounted không dùng useEffect/setState
 const emptySubscribe = () => () => {};
@@ -107,12 +107,19 @@ export function Header() {
           }
           className="flex shrink-0 items-center gap-2"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Cpu className="h-5 w-5" aria-hidden="true" />
-          </span>
-          <span className="hidden text-lg font-bold tracking-tight sm:block">
-            Smart<span className="text-primary">IoT</span>VN
-          </span>
+          <div className="flex items-center gap-2">
+            <Image
+              src={`${siteConfig.logo}`}
+              alt="SmartIoTVN"
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain"
+            />
+
+            <span className="hidden text-lg font-bold tracking-tight sm:block">
+              Smart<span className="text-primary">IoT</span>VN
+            </span>
+          </div>
         </Link>
 
         {/* Desktop navigation */}
@@ -281,7 +288,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setLoginOpen(true)}
-              className="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              className="inline-flex h-9 items-center gap-1.5 rounded-md ml-2 bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <User className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">{t("header.login")}</span>
