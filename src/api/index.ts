@@ -15,7 +15,7 @@ import type {
   Product,
   ProductCategory,
   ProductQuery,
-} from "@/src/types";
+} from "@/types";
 
 const MIN_LATENCY = 400;
 const MAX_LATENCY = 700;

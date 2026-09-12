@@ -10,10 +10,10 @@ import { BlogCard } from "@/components/cards";
 import { SectionHeading } from "@/components/shared/primitives";
 import ShareButton from "@/components/shared/ShareButton";
 
-import { BlogService } from "@/src/services";
-import { PATHS } from "@/src/lib/paths";
-import { siteConfig } from "@/src/config/site";
-import type { LocalizedString } from "@/src/types";
+import { BlogService } from "@/services";
+import { PATHS } from "@/lib/paths";
+import { siteConfig } from "@/config/site";
+import type { LocalizedString } from "@/types";
 
 type BlogPostPageProps = {
   params: Promise<{

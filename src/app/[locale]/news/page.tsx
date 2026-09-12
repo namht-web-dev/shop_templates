@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { NewsService } from "@/src/services";
-import { PAGE_SIZE, siteConfig } from "@/src/config/site";
-import type { Locale, NewsCategory } from "@/src/types";
+import { NewsService } from "@/services";
+import { PAGE_SIZE, siteConfig } from "@/config/site";
+import type { Locale, NewsCategory } from "@/types";
 
-import { isLocale, routing } from "@/src/i18n/routing";
+import { isLocale, routing } from "@/i18n/routing";
 import NewsPageClient from "@/components/news/NewsPageClient";
 
 type NewsPageProps = {

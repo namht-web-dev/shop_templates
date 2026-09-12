@@ -1,7 +1,7 @@
 import { defineRouting } from "next-intl/routing";
 import { createNavigation } from "next-intl/navigation";
 import { SITE_DEFAULT_LOCALE } from "../config/site";
-import { Locale } from "@/src/types";
+import { Locale } from "@/types";
 
 export const routing = defineRouting({
   locales: ["vi", "en"],

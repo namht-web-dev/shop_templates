@@ -11,8 +11,8 @@ import { Globe, Moon, Sun } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/src/lib/theme";
-import { useI18n } from "@/src/i18n";
+import { useTheme } from "@/lib/theme";
+import { useI18n } from "@/i18n";
 
 function OptionButton({
   active,

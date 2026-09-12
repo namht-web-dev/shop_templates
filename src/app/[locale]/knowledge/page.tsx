@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { BlogService } from "@/src/services";
-import { PATHS } from "@/src/lib/paths";
+import { BlogService } from "@/services";
+import { PATHS } from "@/lib/paths";
 
 import { BlogFilters } from "@/components/blog/BlogFilters";
 import { BlogCard } from "@/components/cards";
 import { EmptyState } from "@/components/shared/states";
 import { Newspaper } from "lucide-react";
-import { PAGE_SIZE } from "@/src/config/site";
-import { BLOG_CATEGORIES, BlogCategory, Locale } from "@/src/types";
+import { PAGE_SIZE } from "@/config/site";
+import { BLOG_CATEGORIES, BlogCategory, Locale } from "@/types";
 import Image from "next/image";
-import { isLocale, routing } from "@/src/i18n/routing";
+import { isLocale, routing } from "@/i18n/routing";
 
 interface BlogPageProps {
   params: Promise<{

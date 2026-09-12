@@ -1,7 +1,7 @@
 import { toast } from "sonner";
-import { cartItemFromProduct, useCartStore } from "@/src/store";
-import { useI18n } from "@/src/i18n";
-import type { Product } from "@/src/types";
+import { cartItemFromProduct, useCartStore } from "@/store";
+import { useI18n } from "@/i18n";
+import type { Product } from "@/types";
 
 /** Shared "add to cart + toast" behavior used by cards and detail pages. */
 export function useAddToCart() {

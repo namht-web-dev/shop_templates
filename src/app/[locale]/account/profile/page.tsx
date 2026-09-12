@@ -12,8 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuthStore } from "@/src/store";
-import { useI18n } from "@/src/i18n";
+import { useAuthStore } from "@/store";
+import { useI18n } from "@/i18n";
 
 export default function AccountProfilePage() {
   const { t } = useI18n();

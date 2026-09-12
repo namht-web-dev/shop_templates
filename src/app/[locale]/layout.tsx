@@ -5,13 +5,13 @@ import {
   SITE_DEFAULT_LOCALE,
   SITE_OPEN_GRAPH_LOCALES,
   siteConfig,
-} from "@/src/config/site";
-import { Locale } from "@/src/types";
-import { ThemeProvider } from "@/src/lib/theme";
+} from "@/config/site";
+import { Locale } from "@/types";
+import { ThemeProvider } from "@/lib/theme";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { LocaleProvider } from "@/src/i18n";
-import { isLocale } from "@/src/utils";
+import { LocaleProvider } from "@/i18n";
+import { isLocale } from "@/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

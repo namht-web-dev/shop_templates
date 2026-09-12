@@ -26,10 +26,10 @@ import {
   useAuthStore,
   useCartStore,
   useOrdersStore,
-} from "@/src/store";
+} from "@/store";
 
-import { useI18n } from "@/src/i18n";
-import { PATHS } from "@/src/lib/paths";
+import { useI18n } from "@/i18n";
+import { PATHS } from "@/lib/paths";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

@@ -1,15 +1,15 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { ProductService } from "@/src/services";
+import { ProductService } from "@/services";
 import { CardGridSkeleton, EmptyState } from "@/components/shared/states";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { ShopPagination } from "@/components/shop/ShopPagination";
 import { ShopSort } from "@/components/shop/ShopSort";
-import type { Locale, ProductCategory, ProductSort } from "@/src/types";
-import { PAGE_SIZE, SITE_DEFAULT_LOCALE, siteConfig } from "@/src/config/site";
+import type { Locale, ProductCategory, ProductSort } from "@/types";
+import { PAGE_SIZE, SITE_DEFAULT_LOCALE, siteConfig } from "@/config/site";
 import { getTranslations } from "next-intl/server";
-import { PATHS } from "@/src/lib/paths";
-import { isLocale } from "@/src/utils";
+import { PATHS } from "@/lib/paths";
+import { isLocale } from "@/utils";
 import { ProductCardWrapper } from "@/components/home/ProductCardWrapper";
 
 type PageProps = {

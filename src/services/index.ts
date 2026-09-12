@@ -8,8 +8,8 @@ import {
   newsRepository,
   productRepository,
   searchRepository,
-} from "@/src/repositories";
-import type { BlogQuery } from "@/src/repositories";
+} from "@/repositories";
+import type { BlogQuery } from "@/repositories";
 
 import type {
   BlogCategory,
@@ -20,8 +20,8 @@ import type {
   Product,
   ProductCategory,
   ProductQuery,
-} from "@/src/types";
-import type { GlobalSearchResult } from "@/src/api";
+} from "@/types";
+import type { GlobalSearchResult } from "@/api";
 
 export const ProductService = {
   getProducts: (query: ProductQuery): Promise<Paginated<Product>> =>

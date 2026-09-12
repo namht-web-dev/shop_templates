@@ -8,9 +8,9 @@ import { getTranslations } from "next-intl/server";
 
 import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "@/components/shared/primitives";
-import { NewsService } from "@/src/services";
+import { NewsService } from "@/services";
 
-import { PATHS } from "@/src/lib/paths";
+import { PATHS } from "@/lib/paths";
 
 interface NewsArticlePageProps {
   params: Promise<{

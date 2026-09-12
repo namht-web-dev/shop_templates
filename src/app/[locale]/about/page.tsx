@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 
 import { SectionHeading } from "@/components/shared/primitives";
-import { PATHS } from "@/src/lib/paths";
-import { siteConfig } from "@/src/config/site";
+import { PATHS } from "@/lib/paths";
+import { siteConfig } from "@/config/site";
 
 type AboutPageProps = {
   params: Promise<{

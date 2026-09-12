@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { EmptyState } from "@/components/shared/states";
-import { useOrdersStore } from "@/src/store";
-import { useI18n } from "@/src/i18n";
-import { PATHS } from "@/src/lib/paths";
-import { Order } from "@/src/types";
+import { useOrdersStore } from "@/store";
+import { useI18n } from "@/i18n";
+import { PATHS } from "@/lib/paths";
+import { Order } from "@/types";
 
 export default function AccountOrdersPage() {
   const { t, l, formatPrice, formatDate } = useI18n();

@@ -8,7 +8,7 @@ import React, {
   useMemo,
 } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { Locale, LocalizedString } from "@/src/types";
+import type { Locale, LocalizedString } from "@/types";
 import vi from "../messages/vi.json";
 import en from "../messages/en.json";
 import { SITE_DEFAULT_LOCALE } from "../config/site";

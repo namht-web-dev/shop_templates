@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/src/config/site"; // Hoặc đường dẫn file config URL của bạn
+import { siteConfig } from "@/config/site"; // Hoặc đường dẫn file config URL của bạn
 
 export default function robots(): MetadataRoute.Robots {
   return {

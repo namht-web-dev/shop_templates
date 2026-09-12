@@ -4,7 +4,7 @@ import {
   persist,
   type StateStorage,
 } from "zustand/middleware";
-import type { FakeUser, Order, Product, StoredCartItem } from "@/src/types";
+import type { FakeUser, Order, Product, StoredCartItem } from "@/types";
 import { FAKE_OWNED_COURSES } from "@/mocks";
 
 /* ---------------------------------- Cart ---------------------------------- */

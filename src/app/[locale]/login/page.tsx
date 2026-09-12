@@ -15,10 +15,10 @@ import {
   PasswordField,
 } from "@/components/auth/AuthShell";
 
-import { AuthService, EMAIL_PATTERN } from "@/src/services/authService";
-import { useAuthStore } from "@/src/store";
-import { useI18n } from "@/src/i18n";
-import { PATHS } from "@/src/lib/paths";
+import { AuthService, EMAIL_PATTERN } from "@/services/authService";
+import { useAuthStore } from "@/store";
+import { useI18n } from "@/i18n";
+import { PATHS } from "@/lib/paths";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

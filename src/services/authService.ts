@@ -14,8 +14,8 @@
  *   process.env.NEXT_PUBLIC_* for client-accessible variables.
  */
 
-import type { FakeUser } from "@/src/types";
-import { useAuthStore } from "@/src/store";
+import type { FakeUser } from "@/types";
+import { useAuthStore } from "@/store";
 
 /* -------------------------------------------------------------------------- */
 /* Environment                                                                */

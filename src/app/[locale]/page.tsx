@@ -15,12 +15,12 @@ import { BlogCard, NewsCard } from "@/components/cards";
 import { SectionHeading } from "@/components/shared/primitives";
 import { NewsletterForm } from "@/components/home/NewsletterForm";
 import { ProductCardWrapper } from "@/components/home/ProductCardWrapper";
-import { BlogService, NewsService, ProductService } from "@/src/services";
-import { PATHS } from "@/src/lib/paths";
-import { IMG } from "@/src/lib/images";
-import { BlogPost, Locale, Product } from "@/src/types";
+import { BlogService, NewsService, ProductService } from "@/services";
+import { PATHS } from "@/lib/paths";
+import { IMG } from "@/lib/images";
+import { BlogPost, Locale, Product } from "@/types";
 import { getTranslations } from "next-intl/server";
-import { localePathNavigateHelper } from "@/src/utils";
+import { localePathNavigateHelper } from "@/utils";
 
 const PATH_ICONS = [BookOpen, Zap, Cpu, Radio, Wifi, Layers, CheckCircle2];
 

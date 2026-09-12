@@ -6,8 +6,8 @@
  * To migrate to a real backend, implement each interface as an Api*Repository
  * calling REST endpoints; services and UI components stay untouched.
  */
-import * as api from "@/src/api";
-import type { GlobalSearchResult } from "@/src/api";
+import * as api from "@/api";
+import type { GlobalSearchResult } from "@/api";
 import type {
   BlogCategory,
   BlogPost,
@@ -17,7 +17,7 @@ import type {
   Product,
   ProductCategory,
   ProductQuery,
-} from "@/src/types";
+} from "@/types";
 
 /* ------------------------------ Product repo ------------------------------ */
 

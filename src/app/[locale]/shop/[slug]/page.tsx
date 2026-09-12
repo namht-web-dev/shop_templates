@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { ProductService } from "@/src/services";
-import { PATHS } from "@/src/lib/paths";
-import { siteConfig } from "@/src/config/site";
+import { ProductService } from "@/services";
+import { PATHS } from "@/lib/paths";
+import { siteConfig } from "@/config/site";
 import ProductDetailClient from "@/components/product/ProductDetailClient";
 
 type ProductDetailPageProps = {
