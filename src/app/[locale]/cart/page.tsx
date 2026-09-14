@@ -93,6 +93,13 @@ export default function CartPage() {
           quantity: item.quantity,
         })),
         subtotal,
+        {
+          name: user.name,
+          email: user.email,
+          phone: "",
+          shippingAddress: "",
+          note: "",
+        },
       );
 
       clearCart();
