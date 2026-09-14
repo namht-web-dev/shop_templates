@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SearchService } from "@/services";
-import type { GlobalSearchResult } from "@/api";
+import type { GlobalSearchResult } from "@/app/api";
 import { useI18n } from "@/i18n";
 import { PATHS } from "@/lib/paths";
 

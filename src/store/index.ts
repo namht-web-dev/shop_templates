@@ -4,8 +4,8 @@ import {
   persist,
   type StateStorage,
 } from "zustand/middleware";
-import type { FakeUser, Order, Product, StoredCartItem } from "@/types";
-import { FAKE_OWNED_COURSES } from "@/mocks";
+import type { User, Order, Product, StoredCartItem } from "@/types";
+import { createOrderAction } from "@/actions/order.action";
 
 /* ---------------------------------- Cart ---------------------------------- */
 
@@ -99,13 +99,6 @@ export const selectCartSubtotal = (state: CartState): number =>
 
 /* ----------------------------------- Auth ---------------------------------- */
 
-/**
- * "Remember me" storage strategy:
- * - remember=true  → session persisted in localStorage (survives browser restart).
- * - remember=false → session persisted in sessionStorage (survives reloads in the
- *   same tab, ends when the tab/browser closes), mirroring session-cookie
- *   semantics. The active backing is chosen at login time via a flag.
- */
 const SESSION_FLAG_KEY = "smartiot-auth-session-scope";
 
 function markAuthScope(remember: boolean): void {
@@ -142,7 +135,6 @@ const authStorage: StateStorage = {
     try {
       const backing = activeAuthBacking();
       backing.setItem(name, value);
-      // Keep a single source of truth: drop the copy in the other backing.
       if (backing === sessionStorage) {
         localStorage.removeItem(name);
       } else {
@@ -162,7 +154,6 @@ const authStorage: StateStorage = {
   },
 };
 
-/** Derives a display name from an email local part, e.g. "nguyen.van.a" → "Nguyen Van A". */
 function deriveNameFromEmail(email: string): string {
   const local = email.split("@")[0] ?? "";
   const cleaned = local.replace(/[._-]+/g, " ").trim();
@@ -172,13 +163,6 @@ function deriveNameFromEmail(email: string): string {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
-}
-
-/** Seeds demo course ownership once, so learning flows are demonstrable. */
-function withSeededCourses(current: string[]): string[] {
-  return current.length > 0
-    ? current
-    : Array.from(new Set([...current, ...FAKE_OWNED_COURSES]));
 }
 
 export interface PasswordLoginInput {
@@ -194,14 +178,12 @@ export interface RegisterInput {
 }
 
 interface AuthState {
-  user: FakeUser | null;
-  /** Course slugs the logged-in user owns (fake purchase data). */
+  user: User | null;
   purchasedCourses: string[];
-  /** Legacy quick login used by the header/account dialogs (remember=true semantics). */
-  login: (name: string, email: string) => FakeUser;
-  loginWithPassword: (input: PasswordLoginInput) => FakeUser;
-  register: (input: RegisterInput) => FakeUser;
-  loginWithProvider: (provider: "google") => FakeUser;
+  login: (name: string, email: string) => User;
+  loginWithPassword: (input: PasswordLoginInput) => User;
+  register: (input: RegisterInput) => User;
+  loginWithProvider: (provider: "google") => User;
   updateProfile: (name: string) => void;
   logout: () => void;
   purchaseCourse: (courseSlug: string) => void;
@@ -215,7 +197,7 @@ export const useAuthStore = create<AuthState>()(
       purchasedCourses: [],
       login: (name, email) => {
         markAuthScope(true);
-        const user: FakeUser = {
+        const user: User = {
           id: "user-001",
           name: name.trim() || "Nguyen Van A",
           email: email.trim(),
@@ -223,15 +205,12 @@ export const useAuthStore = create<AuthState>()(
           role: "user",
           provider: "password",
         };
-        set((state) => ({ user }));
-        set((state) => ({
-          purchasedCourses: withSeededCourses(state.purchasedCourses),
-        }));
+        set({ user });
         return user;
       },
       loginWithPassword: ({ email, remember }) => {
         markAuthScope(remember);
-        const user: FakeUser = {
+        const user: User = {
           id: "user-001",
           name: deriveNameFromEmail(email),
           email: email.trim(),
@@ -239,15 +218,12 @@ export const useAuthStore = create<AuthState>()(
           role: "user",
           provider: "password",
         };
-        set((state) => ({ user }));
-        set((state) => ({
-          purchasedCourses: withSeededCourses(state.purchasedCourses),
-        }));
+        set({ user });
         return user;
       },
       register: ({ name, email }) => {
         markAuthScope(true);
-        const user: FakeUser = {
+        const user: User = {
           id: `user-${Date.now().toString(36)}`,
           name: name.trim() || deriveNameFromEmail(email),
           email: email.trim(),
@@ -255,16 +231,12 @@ export const useAuthStore = create<AuthState>()(
           role: "user",
           provider: "password",
         };
-        // Fresh accounts start empty (courses/orders) — realistic gating: only
-        // free previews and purchases unlock content.
-        set((state) => ({ user }));
+        set({ user });
         return user;
       },
       loginWithProvider: (provider) => {
         markAuthScope(true);
-        // Fake Google identity. The real OAuth flow will map the verified
-        // Google profile (sub, email, name) onto a backend user instead.
-        const user: FakeUser = {
+        const user: User = {
           id: "user-google-001",
           name: "Nguyen Van A",
           email: "nguyen.van.a@gmail.com",
@@ -272,10 +244,7 @@ export const useAuthStore = create<AuthState>()(
           role: "user",
           provider,
         };
-        set((state) => ({ user }));
-        set((state) => ({
-          purchasedCourses: withSeededCourses(state.purchasedCourses),
-        }));
+        set({ user });
         return user;
       },
       updateProfile: (name) =>
@@ -301,21 +270,34 @@ export const useAuthStore = create<AuthState>()(
 
 interface OrdersState {
   orders: Order[];
-  placeOrder: (items: Order["items"], total: number) => Order;
+  placeOrder: (items: Order["items"], total: number) => Promise<Order>;
 }
 
 export const useOrdersStore = create<OrdersState>()(
   persist(
     (set) => ({
       orders: [],
-      placeOrder: (items, total) => {
-        const order: Order = {
-          id: `SIM-${Date.now().toString().slice(-8)}`,
-          createdAt: new Date().toISOString(),
-          status: "processing",
+      placeOrder: async (items, total) => {
+        const currentUser = useAuthStore.getState().user;
+
+        // Lưu đồng thời xuống cơ sở dữ liệu Prisma
+        const res = await createOrderAction({
+          userId: currentUser?.id ?? null,
           items,
           total,
-        };
+        });
+
+        const order: Order =
+          res.success && res.order
+            ? (res.order as Order)
+            : {
+                id: `SIM-${Date.now().toString().slice(-8)}`,
+                createdAt: new Date().toISOString(),
+                status: "processing",
+                items,
+                total,
+              };
+
         set((state) => ({ orders: [order, ...state.orders] }));
         return order;
       },

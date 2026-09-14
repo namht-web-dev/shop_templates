@@ -11,6 +11,7 @@ import { useOrdersStore } from "@/store";
 import { useI18n } from "@/i18n";
 import { PATHS } from "@/lib/paths";
 import { Order } from "@/types";
+import Image from "next/image";
 
 export default function AccountOrdersPage() {
   const { t, l, formatPrice, formatDate } = useI18n();
@@ -30,8 +31,7 @@ export default function AccountOrdersPage() {
         }
         action={
           <Button asChild>
-            {" "}
-            <Link href={PATHS.shop}>{t("account.startShopping")} </Link>{" "}
+            <Link href={PATHS.shop}>{t("account.startShopping")} </Link>
           </Button>
         }
       />
@@ -71,9 +71,11 @@ export default function AccountOrdersPage() {
           <ul className="space-y-3">
             {order.items.map((item) => (
               <li key={item.productId} className="flex items-center gap-3">
-                <img
+                <Image
                   src={item.image}
                   alt=""
+                  width={48}
+                  height={48}
                   className="h-12 w-12 rounded-lg border object-cover"
                 />
 

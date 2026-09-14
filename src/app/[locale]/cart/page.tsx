@@ -32,6 +32,7 @@ import { useI18n } from "@/i18n";
 import { PATHS } from "@/lib/paths";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function CartPage() {
   const { t, l, formatPrice } = useI18n();
@@ -69,7 +70,7 @@ export default function CartPage() {
   /* Actions                                                                    */
   /* -------------------------------------------------------------------------- */
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!user) {
       setLoginOpen(true);
       return;
@@ -82,7 +83,7 @@ export default function CartPage() {
     setCheckingOut(true);
 
     try {
-      const order = placeOrder(
+      const order = await placeOrder(
         items.map((item) => ({
           productId: item.productId,
           nameVi: item.nameVi,
@@ -177,12 +178,14 @@ export default function CartPage() {
                     href={PATHS.shopProduct(item.slug)}
                     className="shrink-0"
                   >
-                    <img
+                    <Image
                       src={item.image}
                       alt={l({
                         vi: item.nameVi,
                         en: item.nameEn,
                       })}
+                      width={96}
+                      height={96}
                       className="h-20 w-20 rounded-lg border object-cover sm:h-24 sm:w-24"
                     />
                   </Link>

@@ -30,7 +30,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SearchDialog } from "@/components/shared/SearchDialog";
-import { LoginDialog } from "@/components/shared/LoginDialog";
 import { useCartStore, useAuthStore, selectCartCount } from "@/store";
 import { useI18n } from "@/i18n";
 import { useTheme } from "@/lib/theme";
@@ -65,7 +64,6 @@ export function Header() {
   const logout = useAuthStore((state) => state.logout);
 
   const [searchOpen, setSearchOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
 
   // 2. Tự động reset mobileOpen khi pathname thay đổi (Không dùng useEffect)
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -285,14 +283,13 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <button
-              type="button"
-              onClick={() => setLoginOpen(true)}
+            <Link
+              href={`/${locale}/login`}
               className="inline-flex h-9 items-center gap-1.5 rounded-md ml-2 bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <User className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">{t("header.login")}</span>
-            </button>
+            </Link>
           )}
 
           {/* Mobile menu toggle */}
@@ -343,7 +340,6 @@ export function Header() {
       )}
 
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
-      <LoginDialog open={loginOpen} onOpenChange={setLoginOpen} />
     </header>
   );
 }

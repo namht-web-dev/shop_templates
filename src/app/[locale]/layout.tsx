@@ -12,6 +12,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LocaleProvider } from "@/i18n";
 import { isLocale } from "@/utils";
+import { OAuthCallbackHandler } from "@/components/auth/OAuthCallbackHandler";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -109,6 +111,9 @@ export default async function RootLayout({ children, params }: LayoutProps) {
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <LocaleProvider>
           <ThemeProvider>
+            <Suspense fallback={null}>
+              <OAuthCallbackHandler />
+            </Suspense>
             <Header />
             {children}
             <Footer />

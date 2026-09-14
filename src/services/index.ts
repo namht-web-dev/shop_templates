@@ -21,7 +21,7 @@ import type {
   ProductCategory,
   ProductQuery,
 } from "@/types";
-import type { GlobalSearchResult } from "@/api";
+import type { GlobalSearchResult } from "@/app/api";
 
 export const ProductService = {
   getProducts: (query: ProductQuery): Promise<Paginated<Product>> =>

@@ -8,13 +8,165 @@ generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
+
 datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  category    String
+  cover       String
+  author      String
+  publishedAt DateTime @default(now())
+  readingTime Int      @default(5)
+  featured    Boolean  @default(false)
+  tags        String[] @default([])
+
+  // Dữ liệu đa ngôn ngữ và nội dung động được lưu dạng JSONB trong PostgreSQL
+  title   Json // { vi: string, en: string }
+  excerpt Json // { vi: string, en: string }
+  content Json // Array<{ heading: { vi: string, en: string }, paragraphs: Array<{ vi: string, en: string }> }>
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([publishedAt(sort: Desc)])
+  @@index([featured])
+}
+
+// prisma/schema.prisma
+
+model Product {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  brand       String
+  category    String
+  price       Float
+  salePrice   Float?
+  stock       Int     @default(0)
+  rating      Float   @default(0)
+  reviewCount Int     @default(0)
+  featured    Boolean @default(false)
+
+  // Hình ảnh
+  image   String // Ảnh đại diện (IMG.productEsp32)
+  gallery String[] @default([]) // Mảng album ảnh
+
+  // Dữ liệu đa ngôn ngữ
+  name             Json // { vi: string, en: string }
+  shortDescription Json // { vi: string, en: string }
+  description      Json // { vi: string, en: string }
+
+  // Danh sách thông số kỹ thuật (Mảng các object [{ label: {vi, en}, value: {vi, en} }])
+  specs Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([brand])
+  @@index([featured])
+  @@index([price])
+  @@index([rating])
+}
+
+// prisma/schema.prisma
+
+model NewsArticle {
+  id          String @id @default(cuid())
+  slug        String @unique
+  category    String
+  image       String // Ảnh chính bài tin tức
+  source      String // Nguồn tin (ví dụ: Espressif Developer Blog)
+  readingTime Int    @default(0) // Thời gian đọc (phút)
+
+  // Dữ liệu đa ngôn ngữ
+  title   Json // { vi: string, en: string }
+  excerpt Json // { vi: string, en: string }
+
+  // Nội dung dạng các section bài viết: Array<{ heading: {vi, en}, paragraphs: Array<{vi, en}> }>
+  content Json
+
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([publishedAt])
+}
+
+// prisma/schema.prisma
+
+// prisma/schema.prisma
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum AuthProvider {
+  PASSWORD
+  GOOGLE
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String
+  email         String       @unique
+  password      String? // Nullable nếu đăng nhập bằng OAuth (Google)
+  avatar        String?
+  emailVerified DateTime? // Ngày giờ xác thực email
+  role          Role         @default(USER)
+  provider      AuthProvider @default(PASSWORD)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  orders Order[]
+}
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([email, token])
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model OrderItem {
+  id      String @id @default(cuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String // ID sản phẩm trong DB (hoặc chuỗi ID reference)
+  nameVi    String // Lưu tên sản phẩm tại thời điểm mua
+  nameEn    String?
+  image     String // Đường dẫn ảnh
+  price     Float // Giá tại thời điểm đặt hàng
+  quantity  Int // Số lượng mua
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  code      String      @unique // Mã đơn hàng ngắn gọn hiển thị cho khách (VD: SIM-84739210)
+  userId    String? // Có thể null nếu cho phép khách vãng lai (Guest) đặt hàng
+  user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  total     Float // Tổng tiền đơn hàng
+  status    OrderStatus @default(PROCESSING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  items OrderItem[]
 }

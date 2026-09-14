@@ -169,15 +169,16 @@ export interface Order {
   status: "processing" | "completed";
   items: OrderItem[];
   total: number;
+  code?: string;
 }
 
 /* ---------------------------------- Auth ---------------------------------- */
 
-export interface FakeUser {
+export interface User {
   id: string;
   name: string;
   email: string;
-  avatar: null;
+  avatar: string | null;
   role: "user" | "admin";
   /** How the session was created — enables OAuth-specific UI affordances later. */
   provider?: "password" | "google";
