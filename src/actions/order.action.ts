@@ -8,17 +8,36 @@ export interface CreateOrderParams {
   userId?: string | null;
   items: OrderItem[];
   total: number;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  shippingAddress?: string;
+  note?: string;
 }
 
 export async function createOrderAction(params: CreateOrderParams) {
   try {
-    const { userId, items, total } = params;
+    const {
+      userId,
+      items,
+      total,
+      customerName,
+      customerEmail,
+      customerPhone,
+      shippingAddress,
+      note,
+    } = params;
     const code = `SIM-${Date.now().toString().slice(-8)}`;
 
     const created = await prisma.order.create({
       data: {
         code,
         total,
+        customerName,
+        customerEmail,
+        customerPhone,
+        shippingAddress,
+        note,
         status: "PROCESSING",
         userId: userId || null,
         items: {

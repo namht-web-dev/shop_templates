@@ -270,14 +270,24 @@ export const useAuthStore = create<AuthState>()(
 
 interface OrdersState {
   orders: Order[];
-  placeOrder: (items: Order["items"], total: number) => Promise<Order>;
+  placeOrder: (
+    items: Order["items"],
+    total: number,
+    customer: {
+      name: string;
+      email: string;
+      phone: string;
+      shippingAddress: string;
+      note?: string;
+    },
+  ) => Promise<Order>;
 }
 
 export const useOrdersStore = create<OrdersState>()(
   persist(
     (set) => ({
       orders: [],
-      placeOrder: async (items, total) => {
+      placeOrder: async (items, total, customer) => {
         const currentUser = useAuthStore.getState().user;
 
         // Lưu đồng thời xuống cơ sở dữ liệu Prisma
@@ -285,6 +295,11 @@ export const useOrdersStore = create<OrdersState>()(
           userId: currentUser?.id ?? null,
           items,
           total,
+          customerName: customer.name,
+          customerEmail: customer.email,
+          customerPhone: customer.phone,
+          shippingAddress: customer.shippingAddress,
+          note: customer.note,
         });
 
         const order: Order =

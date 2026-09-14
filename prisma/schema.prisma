@@ -159,10 +159,17 @@ model OrderItem {
 }
 
 model Order {
-  id        String      @id @default(cuid())
-  code      String      @unique // Mã đơn hàng ngắn gọn hiển thị cho khách (VD: SIM-84739210)
-  userId    String? // Có thể null nếu cho phép khách vãng lai (Guest) đặt hàng
-  user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id     String  @id @default(cuid())
+  code   String  @unique // Mã đơn hàng ngắn gọn hiển thị cho khách (VD: SIM-84739210)
+  userId String? // Có thể null nếu cho phép khách vãng lai (Guest) đặt hàng
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  customerName    String?
+  customerEmail   String?
+  customerPhone   String?
+  shippingAddress String?
+  note            String?
+
   total     Float // Tổng tiền đơn hàng
   status    OrderStatus @default(PROCESSING)
   createdAt DateTime    @default(now())
