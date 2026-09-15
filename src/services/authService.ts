@@ -2,7 +2,7 @@
  * Auth service — single swap point for authentication.
  */
 
-import type { User } from "@/types";
+import type { Locale, User } from "@/types";
 import { useAuthStore } from "@/store";
 import { loginAction, registerAction } from "@/actions/auth.action";
 
@@ -62,25 +62,14 @@ export interface RegisterInput {
 export type OAuthProvider = "google";
 
 export interface AuthProvider {
-  id: "fake" | "google-oauth";
-  signInWithPassword(credentials: PasswordCredentials): Promise<User>;
-  signUp(input: RegisterInput): Promise<User>;
+  id: "real-auth";
+  signInWithPassword(
+    credentials: PasswordCredentials,
+    locale: Locale,
+  ): Promise<User>;
+  signUp(input: RegisterInput, locale: Locale): Promise<User>;
   signInWithOAuth(provider: OAuthProvider): Promise<User>;
   requestPasswordReset(email: string): Promise<void>;
-}
-
-const SESSION_FLAG_KEY = "smartiot-auth-session-scope";
-
-function markAuthScope(remember: boolean): void {
-  try {
-    if (remember) {
-      sessionStorage.removeItem(SESSION_FLAG_KEY);
-    } else {
-      sessionStorage.setItem(SESSION_FLAG_KEY, "1");
-    }
-  } catch {
-    /* storage unavailable */
-  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -88,28 +77,29 @@ function markAuthScope(remember: boolean): void {
 /* -------------------------------------------------------------------------- */
 
 export const RealAuthProvider: AuthProvider = {
-  id: "google-oauth",
+  id: "real-auth",
 
-  async signInWithPassword({ email, password, remember }) {
-    const res = await loginAction({ email, password });
+  async signInWithPassword({ email, password, remember }, locale) {
+    const res = await loginAction({ email, password, remember }, locale);
 
     if (!res.success || !res.user) {
-      throw new Error(res.error || "Login failed");
+      throw new Error(res.error || "systemError");
     }
 
-    useAuthStore.getState().login(res.user.name, res.user.email);
-    useAuthStore.setState({ user: res.user });
-    markAuthScope(remember);
+    // Zustand chỉ phục vụ UI
+    useAuthStore.setState({
+      user: res.user,
+    });
 
     return res.user;
   },
 
-  async signUp({ name, email, password }) {
+  async signUp({ name, email, password }, locale) {
     if (!password || password.length < 8) {
       throw new Error("passwordTooShort");
     }
 
-    const res = await registerAction({ name, email, password });
+    const res = await registerAction({ name, email, password }, locale);
 
     if (!res.success) {
       throw new Error(res.error || "Registration failed");

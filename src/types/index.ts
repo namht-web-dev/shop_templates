@@ -163,10 +163,18 @@ export interface OrderItem {
   quantity: number;
 }
 
+export type OrderStatus =
+  | "processing"
+  | "pending"
+  | "completed"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
+
 export interface Order {
   id: string;
   createdAt: string;
-  status: "processing" | "completed";
+  status: OrderStatus;
   items: OrderItem[];
   total: number;
   code?: string;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -23,7 +24,7 @@ export default function VerifyEmailPage() {
   const [loading, setLoading] = useState<boolean>(Boolean(token));
   const [success, setSuccess] = useState<boolean>(false);
   const [message, setMessage] = useState<string>(
-    token ? "" : "Mã xác thực không hợp lệ hoặc thiếu tham số.",
+    token ? "" : t("auth.invalidToken"),
   );
 
   const getPath = (path: string) => localePathNavigateHelper(locale, path);
@@ -36,16 +37,22 @@ export default function VerifyEmailPage() {
     const verify = async () => {
       try {
         const res = await verifyEmailAction(token);
+
         setSuccess(res.success);
+        const errorKey = res?.error;
+
+        const msg = errorKey ? t(`auth.${errorKey}`) : null;
+        console.log(errorKey);
+        console.log(msg);
         setMessage(
-          res.message ||
-            res.error ||
-            (res.success ? "Xác thực thành công!" : "Xác thực thất bại."),
+          msg ||
+            (res.success ? t("auth.verifySuccess") : t("auth.verifyFailed")),
         );
-      } catch {
+      } catch (err: any) {
         setSuccess(false);
+        const errorKey = err?.message;
         setMessage(
-          t("common.errorDescription") || "Đã có lỗi xảy ra khi xác thực.",
+          t(errorKey ? t(`auth.${errorKey}`) : t("common.errorDescription")),
         );
       } finally {
         setLoading(false);
@@ -56,18 +63,13 @@ export default function VerifyEmailPage() {
   }, [token, t]);
 
   return (
-    <AuthShell
-      title={t("auth.verifyTitle") || "Xác thực tài khoản"}
-      subtitle={
-        t("auth.verifyDesc") || "Đang kiểm tra thông tin xác thực email của bạn"
-      }
-    >
+    <AuthShell title={t("auth.verifyTitle")} subtitle={t("auth.verifyDesc")}>
       <div className="flex flex-col items-center justify-center space-y-4 py-6 text-center">
         {loading && (
           <div className="flex flex-col items-center gap-3">
             <Loader2 className="h-10 w-10 animate-spin text-primary" />
             <p className="text-sm text-muted-foreground">
-              Đang xác thực email, vui lòng đợi trong giây lát...
+              {t("auth.verifyLoading")}
             </p>
           </div>
         )}
@@ -77,9 +79,7 @@ export default function VerifyEmailPage() {
             <CheckCircle2 className="h-12 w-12 text-green-500" />
             <p className="text-sm font-medium text-foreground">{message}</p>
             <Button className="mt-4 w-full" asChild>
-              <Link href={getPath(PATHS.login)}>
-                {t("auth.signInInstead") || "Đăng nhập ngay"}
-              </Link>
+              <Link href={getPath(PATHS.login)}>{t("auth.signInNow")}</Link>
             </Button>
           </div>
         )}
@@ -92,7 +92,7 @@ export default function VerifyEmailPage() {
             <div className="mt-4 grid w-full gap-2">
               <Button variant="outline" asChild>
                 <Link href={getPath(PATHS.login)}>
-                  {t("auth.signInInstead") || "Quay lại trang Đăng nhập"}
+                  {t("auth.signInInstead")}
                 </Link>
               </Button>
             </div>

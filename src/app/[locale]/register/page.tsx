@@ -35,6 +35,8 @@ export default function RegisterPage() {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
 
   // Helper điều hướng kèm Locale
   const getPath = (path: string) => localePathNavigateHelper(locale, path);
@@ -73,21 +75,22 @@ export default function RegisterPage() {
     setSubmitting(true);
 
     try {
-      await AuthService.provider.signUp({
-        name: trimmedName,
-        email: trimmedEmail,
-        password,
-      });
+      await AuthService.provider.signUp(
+        {
+          name: trimmedName,
+          email: trimmedEmail,
+          password,
+        },
+        locale,
+      );
+      setRegisteredEmail(trimmedEmail);
+      setRegistrationSuccess(true);
+
       toast.success(t("auth.registerSuccess"));
-      router.push(getPath(`/${locale}${PATHS.account}`));
     } catch (err: any) {
       // Ưu tiên hiển thị message cụ thể nếu có
       const errorKey = err?.message;
-      setError(
-        errorKey
-          ? t(`auth.${errorKey}`, { defaultValue: errorKey })
-          : t("common.errorDescription"),
-      );
+      setError(errorKey ? t(`auth.${errorKey}`) : t("common.errorDescription"));
     } finally {
       setSubmitting(false);
     }
@@ -114,6 +117,32 @@ export default function RegisterPage() {
           <Button variant="outline" asChild>
             <Link href={getPath(PATHS.home)}>{t("nav.home")}</Link>
           </Button>
+        </div>
+      </AuthShell>
+    );
+  }
+  if (registrationSuccess) {
+    return (
+      <AuthShell
+        title={t("auth.verifyEmailTitle")}
+        subtitle={t("auth.verifyEmailDescription")}
+      >
+        <div className="grid gap-4">
+          <div className="rounded-lg border bg-muted/30 p-4 text-center">
+            <p className="text-sm text-muted-foreground">
+              {t("auth.verificationEmailSent")}
+            </p>
+
+            <p className="mt-2 font-medium break-all">{registeredEmail}</p>
+          </div>
+
+          <Button onClick={() => router.push(getPath(PATHS.login))}>
+            {t("auth.goToLogin")}
+          </Button>
+
+          <p className="text-center text-xs text-muted-foreground">
+            {t("auth.checkSpamFolder")}
+          </p>
         </div>
       </AuthShell>
     );

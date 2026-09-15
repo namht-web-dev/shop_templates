@@ -2,6 +2,7 @@
 "use server";
 
 import { prisma } from "@/db";
+import { getCurrentUser } from "@/lib/auth";
 import type { OrderItem } from "@/types";
 
 export interface CreateOrderParams {
@@ -18,7 +19,6 @@ export interface CreateOrderParams {
 export async function createOrderAction(params: CreateOrderParams) {
   try {
     const {
-      userId,
       items,
       total,
       customerName,
@@ -28,7 +28,15 @@ export async function createOrderAction(params: CreateOrderParams) {
       note,
     } = params;
     const code = `SIM-${Date.now().toString().slice(-8)}`;
+    const user = await getCurrentUser();
 
+    if (!user) {
+      return {
+        success: false,
+        orders: [],
+        error: "unauthorized",
+      };
+    }
     const created = await prisma.order.create({
       data: {
         code,
@@ -39,7 +47,7 @@ export async function createOrderAction(params: CreateOrderParams) {
         shippingAddress,
         note,
         status: "PROCESSING",
-        userId: userId || null,
+        userId: user.id || null,
         items: {
           create: items.map((item) => ({
             productId: item.productId,
@@ -75,7 +83,37 @@ export async function createOrderAction(params: CreateOrderParams) {
       },
     };
   } catch (error) {
-    console.error("Lỗi khi lưu đơn hàng Prisma:", error);
-    return { success: false, error: "Tạo đơn hàng thất bại" };
+    console.error("Lỗi khi lưu đơn hàng: ", error);
+    return { success: false, error: "Create orders failed." }; //Tạo đơn hàng thất bại
   }
+}
+
+export async function getMyOrdersAction() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return {
+      success: false,
+      orders: [],
+      error: "unauthorized",
+    };
+  }
+
+  const orders = await prisma.order.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      items: true,
+    },
+  });
+  console.log(orders);
+
+  return {
+    success: true,
+    orders,
+  };
 }

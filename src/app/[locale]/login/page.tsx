@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -66,17 +67,21 @@ export default function LoginForm() {
     setSubmitting(true);
 
     try {
-      await AuthService.provider.signInWithPassword({
-        email: trimmedEmail,
-        password,
-        remember,
-      });
+      await AuthService.provider.signInWithPassword(
+        {
+          email: trimmedEmail,
+          password,
+          remember,
+        },
+        locale,
+      );
 
       toast.success(t("auth.loggedIn"));
 
       router.push(`/${locale}${PATHS.account}`);
-    } catch {
-      setError(t("common.errorDescription"));
+    } catch (err: any) {
+      const errorKey = err instanceof Error ? err.message : null;
+      setError(errorKey ? t(`auth.${errorKey}`) : t("common.errorDescription"));
     } finally {
       setSubmitting(false);
     }

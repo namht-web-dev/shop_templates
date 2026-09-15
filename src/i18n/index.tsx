@@ -11,14 +11,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Locale, LocalizedString } from "@/types";
 import vi from "../messages/vi.json";
 import en from "../messages/en.json";
-import { SITE_DEFAULT_LOCALE } from "../config/site";
+import { SITE_DEFAULT_LOCALE, siteConfig } from "../config/site";
 
 type Messages = { [key: string]: string | Messages };
 
 const dictionaries: Record<Locale, Messages> = { vi, en };
 
 export const LOCALES: Locale[] = ["vi", "en"];
-const LOCALE_STORAGE_KEY = "smartiot-locale";
+const LOCALE_STORAGE_KEY = `${siteConfig.siteId}-locale`;
 
 function isLocale(value: string | undefined): value is Locale {
   return value === "vi" || value === "en";

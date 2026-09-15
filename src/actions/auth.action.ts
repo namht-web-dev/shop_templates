@@ -4,18 +4,23 @@ import { prisma } from "@/db";
 import bcrypt from "bcryptjs";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { Locale } from "@/types";
+import { createSession } from "@/lib/auth";
 
 // 1. ĐĂNG KÝ
-export async function registerAction(input: {
-  name: string;
-  email: string;
-  password: string;
-}) {
+export async function registerAction(
+  input: {
+    name: string;
+    email: string;
+    password: string;
+  },
+  locale: Locale,
+) {
   try {
     const { name, email, password } = input;
 
     if (!name || !email || !password) {
-      return { success: false, error: "Vui lòng nhập đầy đủ thông tin!" };
+      return { success: false, error: "requiredFields" };
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -23,7 +28,7 @@ export async function registerAction(input: {
     });
 
     if (existingUser) {
-      return { success: false, error: "Email này đã được đăng ký!" };
+      return { success: false, error: "emailExists" };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -43,16 +48,16 @@ export async function registerAction(input: {
     await sendVerificationEmail(
       verificationToken.email,
       verificationToken.token,
+      locale,
     );
 
     return {
       success: true,
-      message:
-        "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.",
+      message: "registerSuccess",
     };
   } catch (error) {
     console.error("registerAction error:", error);
-    return { success: false, error: "Đã có lỗi xảy ra khi đăng ký." };
+    return { success: false, error: "systemError" };
   }
 }
 
@@ -64,11 +69,11 @@ export async function verifyEmailAction(token: string) {
     });
 
     if (!existingToken) {
-      return { success: false, error: "Mã xác thực không hợp lệ!" };
+      return { success: false, error: "invalidToken" };
     }
 
     if (new Date(existingToken.expiresAt) < new Date()) {
-      return { success: false, error: "Mã xác thực đã hết hạn!" };
+      return { success: false, error: "tokenExpired" };
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -76,7 +81,7 @@ export async function verifyEmailAction(token: string) {
     });
 
     if (!existingUser) {
-      return { success: false, error: "Tài khoản không tồn tại!" };
+      return { success: false, error: "userNotFound" };
     }
 
     // Đánh dấu email đã xác thực
@@ -94,47 +99,53 @@ export async function verifyEmailAction(token: string) {
 
     return {
       success: true,
-      message: "Xác thực email thành công! Bạn có thể đăng nhập ngay.",
+      error: "verifySuccess",
     };
   } catch (error) {
     console.error("verifyEmailAction error:", error);
-    return { success: false, error: "Lỗi hệ thống khi xác thực." };
+    return { success: false, error: "systemError" };
   }
 }
 
 // 3. ĐĂNG NHẬP (Lấy dữ liệu thật từ DB)
-export async function loginAction(input: { email: string; password: string }) {
+export async function loginAction(
+  input: { email: string; password: string; remember: boolean },
+  locale: Locale,
+) {
   try {
-    const { email, password } = input;
+    const { email, password, remember } = input;
 
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
     if (!user || !user.password) {
-      return { success: false, error: "Email hoặc mật khẩu không chính xác!" };
+      return { success: false, error: "invalidCredentials" };
     }
 
     // Kiểm tra đã xác thực email chưa
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return { success: false, error: "invalidCredentials" };
+    }
+
     if (!user.emailVerified) {
       // Tự động gửi lại mail xác thực
       const verificationToken = await generateVerificationToken(user.email);
       await sendVerificationEmail(
         verificationToken.email,
         verificationToken.token,
+        locale,
       );
 
       return {
         success: false,
-        error:
-          "Tài khoản chưa được xác thực. Mã xác thực mới đã được gửi vào email của bạn!",
+        error: "emailNotVerified",
       };
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return { success: false, error: "Email hoặc mật khẩu không chính xác!" };
-    }
+    await createSession(user.id, remember);
 
     return {
       success: true,
@@ -149,6 +160,6 @@ export async function loginAction(input: { email: string; password: string }) {
     };
   } catch (error) {
     console.error("loginAction error:", error);
-    return { success: false, error: "Đã xảy ra lỗi khi đăng nhập." };
+    return { success: false, error: "systemError" };
   }
 }

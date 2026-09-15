@@ -124,7 +124,8 @@ model User {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
-  orders Order[]
+  orders   Order[]
+  sessions Session[]
 }
 
 model VerificationToken {
@@ -176,4 +177,16 @@ model Order {
   updatedAt DateTime    @updatedAt
 
   items OrderItem[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

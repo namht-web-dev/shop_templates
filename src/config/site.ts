@@ -3,6 +3,7 @@ import { Locale } from "../types";
 export const SITE_DEFAULT_LOCALE = "vi" as const;
 export const SITE_LOCALES_SUPPORT = ["vi", "en"];
 export const PAGE_SIZE = 8;
+export const SESSION_COOKIE = "smartiot-sessionKey";
 
 export const SITE_OPEN_GRAPH_LOCALES: Record<Locale, string> = {
   vi: "vi_VN",
@@ -16,6 +17,7 @@ export const siteConfig = {
   url: "https://example.com",
   logo: "/logoRounded512.png",
   ogImage: "/og-image.png",
+  siteId: "smartiot",
 
   // =========================
   // Localization
@@ -200,6 +202,39 @@ export const siteConfig = {
       title: "Quality IoT Components & Devices",
       description: "Shop ESP32, Arduino components and quality IoT devices.",
       keywords: ["iot store", "esp32", "arduino", "electronics components"],
+    },
+  },
+  /////
+  emailContent: {
+    en: {
+      subject: "SmartIoT - Verify your email address",
+      preheader: "Complete your SmartIoT account registration.",
+      title: "Verify your email",
+      greeting: "Welcome to SmartIoT!",
+      description:
+        "Thanks for creating an account with us. Please verify your email address to activate your SmartIoT account.",
+      button: "Verify my email",
+      expiry:
+        "For your security, this verification link will expire in 24 hours.",
+      ignore:
+        "If you did not create a SmartIoT account, you can safely ignore this email.",
+      footer: "SmartIoT — IoT & Embedded Technology",
+      copyright: "© 2026 SmartIoT. All rights reserved.",
+    },
+
+    vi: {
+      subject: "SmartIoT - Xác thực địa chỉ email",
+      preheader: "Hoàn tất đăng ký tài khoản SmartIoT của bạn.",
+      title: "Xác thực email",
+      greeting: "Chào mừng bạn đến với SmartIoT!",
+      description:
+        "Cảm ơn bạn đã đăng ký tài khoản. Vui lòng xác thực địa chỉ email để kích hoạt tài khoản SmartIoT của bạn.",
+      button: "Xác thực email",
+      expiry: "Vì lý do bảo mật, liên kết xác thực này sẽ hết hạn sau 24 giờ.",
+      ignore:
+        "Nếu bạn không đăng ký tài khoản SmartIoT, bạn có thể bỏ qua email này.",
+      footer: "SmartIoT — Công nghệ IoT & Embedded",
+      copyright: "© 2026 SmartIoT. All rights reserved.",
     },
   },
 };

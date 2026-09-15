@@ -288,11 +288,8 @@ export const useOrdersStore = create<OrdersState>()(
     (set) => ({
       orders: [],
       placeOrder: async (items, total, customer) => {
-        const currentUser = useAuthStore.getState().user;
-
         // Lưu đồng thời xuống cơ sở dữ liệu Prisma
         const res = await createOrderAction({
-          userId: currentUser?.id ?? null,
           items,
           total,
           customerName: customer.name,
