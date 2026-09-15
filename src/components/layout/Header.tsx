@@ -18,7 +18,7 @@ import {
   ShoppingBag,
   ShoppingCart,
   Sun,
-  User,
+  User as UserIcon,
   X,
 } from "lucide-react";
 import {
@@ -35,10 +35,12 @@ import { useI18n } from "@/i18n";
 import { useTheme } from "@/lib/theme";
 import { PATHS } from "@/lib/paths";
 import { cn } from "@/lib/utils";
-import type { Locale } from "@/types";
+import type { Locale, User } from "@/types";
 import { SITE_DEFAULT_LOCALE, siteConfig } from "@/config/site";
 import Image from "next/image";
-
+type HeaderProps = {
+  user: User | null;
+};
 // Hook chuẩn kiểm tra mounted không dùng useEffect/setState
 const emptySubscribe = () => () => {};
 function useHasMounted() {
@@ -49,7 +51,7 @@ function useHasMounted() {
   );
 }
 
-export function Header() {
+export function Header({ user }: HeaderProps) {
   const { t, locale, setLocale } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
@@ -60,7 +62,6 @@ export function Header() {
   const mounted = useHasMounted();
 
   const cartCount = useCartStore(selectCartCount);
-  const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
   const [searchOpen, setSearchOpen] = useState(false);
@@ -221,7 +222,7 @@ export function Header() {
           </Link>
 
           {/* Account */}
-          {mounted && user ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -245,7 +246,7 @@ export function Header() {
                 <DropdownMenuItem
                   onClick={() => router.push(`/${locale}${PATHS.account}`)}
                 >
-                  <User className="h-4 w-4 mr-2" aria-hidden="true" />
+                  <UserIcon className="h-4 w-4 mr-2" aria-hidden="true" />
                   {t("account.profile")}
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -287,7 +288,7 @@ export function Header() {
               href={`/${locale}/login`}
               className="inline-flex h-9 items-center gap-1.5 rounded-md ml-2 bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              <User className="h-4 w-4" aria-hidden="true" />
+              <UserIcon className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">{t("header.login")}</span>
             </Link>
           )}

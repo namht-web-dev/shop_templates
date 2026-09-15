@@ -182,14 +182,17 @@ export interface Order {
 
 /* ---------------------------------- Auth ---------------------------------- */
 
+export type Role = "USER" | "ADMIN";
+export type Provider = "PASSWORD" | "GOOGLE";
+
 export interface User {
   id: string;
   name: string;
   email: string;
   avatar: string | null;
-  role: "user" | "admin";
+  role: Role;
   /** How the session was created — enables OAuth-specific UI affordances later. */
-  provider?: "password" | "google";
+  provider?: Provider;
 }
 
 /* --------------------------------- Search --------------------------------- */

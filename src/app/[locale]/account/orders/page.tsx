@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Package } from "lucide-react";
+import { Loader2, Package } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -35,7 +35,13 @@ export default function AccountOrdersPage() {
 
     loadOrders();
   }, []);
-
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center gap-3">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      </div>
+    );
+  }
   if (orders.length === 0) {
     return (
       <EmptyState

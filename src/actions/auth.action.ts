@@ -4,7 +4,7 @@ import { prisma } from "@/db";
 import bcrypt from "bcryptjs";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
-import { Locale } from "@/types";
+import { Locale, Provider, Role } from "@/types";
 import { createSession } from "@/lib/auth";
 
 // 1. ĐĂNG KÝ
@@ -154,8 +154,8 @@ export async function loginAction(
         name: user.name,
         email: user.email,
         avatar: user.avatar || null,
-        role: user.role.toLowerCase() as "user" | "admin",
-        provider: user.provider.toLowerCase() as "password" | "google",
+        role: user.role.toLowerCase() as Role,
+        provider: user.provider.toLowerCase() as Provider,
       },
     };
   } catch (error) {

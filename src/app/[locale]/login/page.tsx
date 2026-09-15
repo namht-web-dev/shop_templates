@@ -94,7 +94,7 @@ export default function LoginForm() {
     try {
       toast.info(t("auth.googleDemo"));
 
-      await AuthService.provider.signInWithOAuth("google");
+      await AuthService.provider.signInWithOAuth("GOOGLE");
 
       toast.success(t("auth.loggedIn"));
 

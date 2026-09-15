@@ -99,7 +99,7 @@ export default function RegisterPage() {
   const handleGoogle = async () => {
     setSubmitting(true);
     try {
-      await AuthService.provider.signInWithOAuth("google");
+      await AuthService.provider.signInWithOAuth("GOOGLE");
     } catch (err: any) {
       setError(err?.message || t("common.errorDescription"));
       setSubmitting(false);

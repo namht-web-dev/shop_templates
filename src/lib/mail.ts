@@ -17,7 +17,6 @@ export const sendVerificationEmail = async (
   token: string,
   serverLocale: Locale,
 ) => {
-  console.log(serverLocale);
   const locale = (serverLocale || siteConfig.defaultLocale) as Locale;
   const content = siteConfig.emailContent[locale] ?? siteConfig.emailContent.vi;
 

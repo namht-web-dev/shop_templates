@@ -59,7 +59,7 @@ export interface RegisterInput {
   password: string;
 }
 
-export type OAuthProvider = "google";
+export type OAuthProvider = "GOOGLE";
 
 export interface AuthProvider {
   id: "real-auth";
@@ -110,13 +110,13 @@ export const RealAuthProvider: AuthProvider = {
       name,
       email,
       avatar: null,
-      role: "user",
-      provider: "password",
+      role: "USER",
+      provider: "PASSWORD",
     };
   },
 
   async signInWithOAuth(provider) {
-    if (provider === "google") {
+    if (provider === "GOOGLE") {
       if (!isGoogleOAuthConfigured()) {
         throw new Error("Google OAuth chưa được cấu hình.");
       }

@@ -110,7 +110,6 @@ export async function getMyOrdersAction() {
       items: true,
     },
   });
-  console.log(orders);
 
   return {
     success: true,

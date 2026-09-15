@@ -14,6 +14,7 @@ import { LocaleProvider } from "@/i18n";
 import { isLocale } from "@/utils";
 import { OAuthCallbackHandler } from "@/components/auth/OAuthCallbackHandler";
 import { Suspense } from "react";
+import { getCurrentUser } from "@/lib/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -99,6 +100,7 @@ export async function generateMetadata({
 export default async function RootLayout({ children, params }: LayoutProps) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : SITE_DEFAULT_LOCALE;
+  const user = await getCurrentUser();
 
   return (
     <html
@@ -114,7 +116,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             <Suspense fallback={null}>
               <OAuthCallbackHandler />
             </Suspense>
-            <Header />
+            <Header user={user} />
             {children}
             <Footer />
           </ThemeProvider>

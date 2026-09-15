@@ -183,7 +183,7 @@ interface AuthState {
   login: (name: string, email: string) => User;
   loginWithPassword: (input: PasswordLoginInput) => User;
   register: (input: RegisterInput) => User;
-  loginWithProvider: (provider: "google") => User;
+  loginWithProvider: (provider: "GOOGLE") => User;
   updateProfile: (name: string) => void;
   logout: () => void;
   purchaseCourse: (courseSlug: string) => void;
@@ -202,8 +202,8 @@ export const useAuthStore = create<AuthState>()(
           name: name.trim() || "Nguyen Van A",
           email: email.trim(),
           avatar: null,
-          role: "user",
-          provider: "password",
+          role: "USER",
+          provider: "PASSWORD",
         };
         set({ user });
         return user;
@@ -215,8 +215,8 @@ export const useAuthStore = create<AuthState>()(
           name: deriveNameFromEmail(email),
           email: email.trim(),
           avatar: null,
-          role: "user",
-          provider: "password",
+          role: "USER",
+          provider: "PASSWORD",
         };
         set({ user });
         return user;
@@ -228,8 +228,8 @@ export const useAuthStore = create<AuthState>()(
           name: name.trim() || deriveNameFromEmail(email),
           email: email.trim(),
           avatar: null,
-          role: "user",
-          provider: "password",
+          role: "USER",
+          provider: "PASSWORD",
         };
         set({ user });
         return user;
@@ -241,7 +241,7 @@ export const useAuthStore = create<AuthState>()(
           name: "Nguyen Van A",
           email: "nguyen.van.a@gmail.com",
           avatar: null,
-          role: "user",
+          role: "USER",
           provider,
         };
         set({ user });

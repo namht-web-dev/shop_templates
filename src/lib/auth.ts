@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { v4 as uuidv4 } from "uuid";
 import { prisma } from "@/db";
 import { SESSION_COOKIE } from "@/config/site";
+import { User } from "@/types";
 
 export async function createSession(userId: string, remember: boolean) {
   const token = uuidv4();
@@ -29,7 +30,7 @@ export async function createSession(userId: string, remember: boolean) {
   });
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<User | null> {
   const cookieStore = await cookies();
 
   const token = cookieStore.get(SESSION_COOKIE)?.value;
@@ -43,7 +44,16 @@ export async function getCurrentUser() {
       token,
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          avatar: true,
+          role: true,
+          provider: true,
+        },
+      },
     },
   });
 

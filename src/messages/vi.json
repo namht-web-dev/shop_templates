@@ -334,7 +334,7 @@
     "statusShipped": "Đã gửi hàng",
     "statusDelivered": "Đã giao hàng",
     "statusCompleted": "Hoàn tất",
-    "statusCanceled": "Đã hủy",
+    "statusCancelled": "Đã hủy",
     "settingsDesc": "Tùy chọn cho ứng dụng demo này.",
     "appearance": "Hiển thị",
     "themeLight": "Sáng",

@@ -42,8 +42,7 @@ export default function VerifyEmailPage() {
         const errorKey = res?.error;
 
         const msg = errorKey ? t(`auth.${errorKey}`) : null;
-        console.log(errorKey);
-        console.log(msg);
+
         setMessage(
           msg ||
             (res.success ? t("auth.verifySuccess") : t("auth.verifyFailed")),
