@@ -18,6 +18,7 @@ import { PATHS } from "@/lib/paths";
 import { cn } from "@/lib/utils";
 import { SITE_DEFAULT_LOCALE } from "@/config/site";
 import { User } from "@/types";
+import { logoutAction } from "@/lib/auth";
 
 const NAV_ITEMS = [
   {
@@ -57,7 +58,8 @@ export function AccountLayout({ user, children }: AccountLayoutProps) {
   const router = useRouter();
   const logout = useAuthStore((state) => state.logout);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logoutAction();
     logout();
     toast.success(t("auth.loggedOut"));
     router.push(`/${locale}${PATHS.home}`);

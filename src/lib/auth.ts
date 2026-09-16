@@ -1,10 +1,44 @@
+"use server";
+
 import { cookies } from "next/headers";
 import { v4 as uuidv4 } from "uuid";
 import { prisma } from "@/db";
-import { SESSION_COOKIE } from "@/config/site";
+import { LIMIT_SESSION, SESSION_COOKIE } from "@/config/site";
 import { User } from "@/types";
+import { createHash } from "crypto";
 
-export async function createSession(userId: string, remember: boolean) {
+function hashToken(token: string) {
+  return createHash("sha256").update(token).digest("hex");
+}
+
+export async function createSession(
+  userId: string,
+  remember: boolean,
+  ipAddress: string | null,
+  userAgent: string | null,
+) {
+  await prisma.session.deleteMany({
+    where: {
+      userId,
+      expiresAt: {
+        lt: new Date(),
+      },
+    },
+  });
+
+  const sessions = await prisma.session.findMany({
+    where: { userId },
+    orderBy: { createdAt: "asc" },
+  });
+
+  // Đã đủ 5 session → xóa session cũ nhất
+  if (sessions.length >= LIMIT_SESSION) {
+    await prisma.session.delete({
+      where: {
+        id: sessions[0].id,
+      },
+    });
+  }
   const token = uuidv4();
 
   const expiresAt = new Date(
@@ -13,9 +47,11 @@ export async function createSession(userId: string, remember: boolean) {
 
   await prisma.session.create({
     data: {
-      token,
+      tokenHash: hashToken(token),
       userId,
       expiresAt,
+      ipAddress,
+      userAgent,
     },
   });
 
@@ -38,10 +74,10 @@ export async function getCurrentUser(): Promise<User | null> {
   if (!token) {
     return null;
   }
-
+  const tokenHash = hashToken(token);
   const session = await prisma.session.findUnique({
     where: {
-      token,
+      tokenHash,
     },
     include: {
       user: {
@@ -72,4 +108,19 @@ export async function getCurrentUser(): Promise<User | null> {
   }
 
   return session.user;
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+  if (token) {
+    const tokenHash = hashToken(token);
+
+    await prisma.session.deleteMany({
+      where: { tokenHash },
+    });
+  }
+
+  cookieStore.delete(SESSION_COOKIE);
 }

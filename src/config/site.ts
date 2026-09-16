@@ -4,6 +4,7 @@ export const SITE_DEFAULT_LOCALE = "vi" as const;
 export const SITE_LOCALES_SUPPORT = ["vi", "en"];
 export const PAGE_SIZE = 8;
 export const SESSION_COOKIE = "smartiot-sessionKey";
+export const LIMIT_SESSION = 5;
 
 export const SITE_OPEN_GRAPH_LOCALES: Record<Locale, string> = {
   vi: "vi_VN",

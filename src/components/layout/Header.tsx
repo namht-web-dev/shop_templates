@@ -38,6 +38,7 @@ import { cn } from "@/lib/utils";
 import type { Locale, User } from "@/types";
 import { SITE_DEFAULT_LOCALE, siteConfig } from "@/config/site";
 import Image from "next/image";
+import { logoutAction } from "@/lib/auth";
 type HeaderProps = {
   user: User | null;
 };
@@ -82,7 +83,8 @@ export function Header({ user }: HeaderProps) {
       label: t(`nav.${item.key}`),
     }));
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logoutAction();
     logout();
     router.push(`/${locale}${PATHS.home}`);
   };

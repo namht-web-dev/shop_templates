@@ -6,6 +6,7 @@ import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
 import { Locale, Provider, Role } from "@/types";
 import { createSession } from "@/lib/auth";
+import { headers } from "next/headers";
 
 // 1. ĐĂNG KÝ
 export async function registerAction(
@@ -144,8 +145,13 @@ export async function loginAction(
         error: "emailNotVerified",
       };
     }
-
-    await createSession(user.id, remember);
+    const clientInfo = await getClientInfo();
+    await createSession(
+      user.id,
+      remember,
+      clientInfo.ipAddress,
+      clientInfo.userAgent,
+    );
 
     return {
       success: true,
@@ -162,4 +168,20 @@ export async function loginAction(
     console.error("loginAction error:", error);
     return { success: false, error: "systemError" };
   }
+}
+
+export async function getClientInfo() {
+  const headersList = await headers();
+
+  const userAgent = headersList.get("user-agent");
+
+  const ipAddress =
+    headersList.get("x-forwarded-for")?.split(",")[0].trim() ||
+    headersList.get("x-real-ip") ||
+    null;
+
+  return {
+    ipAddress,
+    userAgent,
+  };
 }

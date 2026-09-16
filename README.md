@@ -39,4 +39,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
     Site ID
     Remove Demo
-    Add Admin
+    Add Admin page
+    localStorage đang lưu user tại trang login
