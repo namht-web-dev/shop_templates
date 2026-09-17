@@ -9,6 +9,23 @@
     "news": "News",
     "about": "About"
   },
+  "admin": {
+    "panel": "Admin",
+    "navigation": "Navigation",
+    "dashboard": "Dashboard",
+    "subtitle": "Manage Smart IoT VN",
+    "openMenu": "Open admin menu",
+    "toggleTheme": "Toggle theme",
+    "viewWebsite": "View website",
+    "nav": {
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "knowledge": "Knowledge",
+      "news": "News",
+      "orders": "Orders",
+      "users": "Users"
+    }
+  },
   "header": {
     "searchPlaceholder": "Search products, courses, articles…",
     "search": "Search",
@@ -222,14 +239,46 @@
     "total": "Total",
     "removeItem": "Remove",
     "clearCart": "Clear cart",
-    "checkout": "Checkout",
+
     "loginRequiredTitle": "Login required to checkout",
     "loginRequiredDesc": "Please log in to complete your order. Your cart will be saved.",
     "loginToCheckout": "Login to checkout",
     "orderPlaced": "Order placed successfully!",
     "viewOrders": "View My Orders",
     "freeShipping": "Free shipping on orders over 500.000₫",
-    "secureDemo": "Demo checkout — no real payment is processed."
+    "secureDemo": "Demo checkout — no real payment is processed.",
+    "checkout": {
+      "title": "Checkout",
+      "shippingInformation": "Shipping Information",
+      "savedAddress": "Previously Used Addresses",
+      "selectSavedAddress": "Select a saved address",
+      "recipientName": "Recipient's Full Name",
+      "recipientNamePlaceholder": "Enter full name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter phone number",
+      "phoneRequired": "Please enter a phone number",
+      "phoneInvalid": "Invalid phone number",
+      "province": "Province / City",
+      "provincePlaceholder": "Select province / city",
+      "ward": "Ward / Commune",
+      "wardPlaceholder": "Select ward / commune",
+      "detailAddress": "Detailed Address",
+      "detailAddressPlaceholder": "House number, street, building...",
+      "detailAddressRequired": "Please enter a detailed address",
+      "provinceRequired": "Please select a province / city",
+      "wardRequired": "Please select a ward / commune",
+      "loadingProvinces": "Loading provinces / cities...",
+      "loadingWards": "Loading wards / communes...",
+      "loadAddressError": "Unable to load address data",
+      "note": "Order Note",
+      "notePlaceholder": "Additional notes for the seller (optional)",
+      "submit": "Place Order",
+      "processing": "Processing...",
+      "addressSection": "Shipping Address",
+      "required": "Required",
+      "searchWard": "Search ward / commune",
+      "noWardFound": "No ward / commune found"
+    }
   },
   "auth": {
     "loginTitle": "Login to SmartIoTVN",

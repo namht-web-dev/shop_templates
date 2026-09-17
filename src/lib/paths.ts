@@ -5,6 +5,7 @@
  * same segments map 1:1 onto the /app/[locale]/... directory structure.
  */
 export const PATHS = {
+  admin: "/admin",
   home: "/",
   shop: "/shop",
   shopProduct: (slug: string) => `/shop/${slug}`,

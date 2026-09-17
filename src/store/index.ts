@@ -180,89 +180,56 @@ export interface RegisterInput {
 interface AuthState {
   user: User | null;
   purchasedCourses: string[];
-  login: (name: string, email: string) => User;
-  loginWithPassword: (input: PasswordLoginInput) => User;
-  register: (input: RegisterInput) => User;
-  loginWithProvider: (provider: "GOOGLE") => User;
+
+  setUser: (user: User | null, remember?: boolean) => void;
   updateProfile: (name: string) => void;
   logout: () => void;
+
   purchaseCourse: (courseSlug: string) => void;
   ownsCourse: (courseSlug: string) => boolean;
 }
-
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       user: null,
       purchasedCourses: [],
-      login: (name, email) => {
-        markAuthScope(true);
-        const user: User = {
-          id: "user-001",
-          name: name.trim() || "Nguyen Van A",
-          email: email.trim(),
-          avatar: null,
-          role: "USER",
-          provider: "PASSWORD",
-        };
-        set({ user });
-        return user;
-      },
-      loginWithPassword: ({ email, remember }) => {
+
+      setUser: (user, remember = true) => {
         markAuthScope(remember);
-        const user: User = {
-          id: "user-001",
-          name: deriveNameFromEmail(email),
-          email: email.trim(),
-          avatar: null,
-          role: "USER",
-          provider: "PASSWORD",
-        };
         set({ user });
-        return user;
       },
-      register: ({ name, email }) => {
-        markAuthScope(true);
-        const user: User = {
-          id: `user-${Date.now().toString(36)}`,
-          name: name.trim() || deriveNameFromEmail(email),
-          email: email.trim(),
-          avatar: null,
-          role: "USER",
-          provider: "PASSWORD",
-        };
-        set({ user });
-        return user;
-      },
-      loginWithProvider: (provider) => {
-        markAuthScope(true);
-        const user: User = {
-          id: "user-google-001",
-          name: "Nguyen Van A",
-          email: "nguyen.van.a@gmail.com",
-          avatar: null,
-          role: "USER",
-          provider,
-        };
-        set({ user });
-        return user;
-      },
+
       updateProfile: (name) =>
         set((state) =>
           state.user
-            ? { user: { ...state.user, name: name.trim() || state.user.name } }
+            ? {
+                user: {
+                  ...state.user,
+                  name: name.trim() || state.user.name,
+                },
+              }
             : state,
         ),
-      logout: () => set({ user: null, purchasedCourses: [] }),
+
+      logout: () =>
+        set({
+          user: null,
+          purchasedCourses: [],
+        }),
+
       purchaseCourse: (courseSlug) =>
         set((state) => ({
           purchasedCourses: Array.from(
             new Set([...state.purchasedCourses, courseSlug]),
           ),
         })),
+
       ownsCourse: (courseSlug) => get().purchasedCourses.includes(courseSlug),
     }),
-    { name: "smartiot-auth", storage: createJSONStorage(() => authStorage) },
+    {
+      name: "smartiot-auth",
+      storage: createJSONStorage(() => authStorage),
+    },
   ),
 );
 

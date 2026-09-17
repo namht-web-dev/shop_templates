@@ -90,6 +90,9 @@ export const RealAuthProvider: AuthProvider = {
     useAuthStore.setState({
       user: res.user,
     });
+    if (res.success && res.user) {
+      useAuthStore.getState().setUser(res.user, remember);
+    }
 
     return res.user;
   },

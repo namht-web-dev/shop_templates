@@ -70,7 +70,9 @@ export function Header({ user }: HeaderProps) {
   // 2. Tự động reset mobileOpen khi pathname thay đổi (Không dùng useEffect)
   const [mobileOpen, setMobileOpen] = useState(false);
   const [prevPathname, setPrevPathname] = useState(pathname);
-
+  if (pathname.includes("/admin") || pathname === "/admin") {
+    return null;
+  }
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     setMobileOpen(false); // React cho phép điều chỉnh state trực tiếp trong render loop khi phát hiện prop/state khác thay đổi

@@ -202,3 +202,29 @@ export interface GroupedSearchResults {
   articles: BlogPost[];
   news: NewsArticle[];
 }
+
+export type Province = {
+  name: string;
+  code: number;
+  division_type: string;
+  codename: string;
+  phone_code: number;
+  wards: Ward[];
+};
+
+export type Ward = {
+  name: string;
+  code: number;
+  division_type: string;
+  codename: string;
+  province_code: number;
+};
+
+export type PreviousAddress = {
+  id: string;
+  name: string;
+  phone: string;
+  provinceCode: number;
+  wardCode: number;
+  addressLine: string;
+};

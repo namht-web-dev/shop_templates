@@ -11,8 +11,8 @@ export interface CreateOrderParams {
   total: number;
   customerName?: string;
   customerEmail?: string;
-  customerPhone?: string;
-  shippingAddress?: string;
+  customerPhone: string;
+  shippingAddress: string;
   note?: string;
 }
 

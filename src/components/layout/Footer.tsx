@@ -10,9 +10,15 @@ import { useI18n } from "@/i18n";
 import { PATHS } from "@/lib/paths";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
+
   const { t, locale } = useI18n();
+  if (pathname.includes("/admin") || pathname === "/admin") {
+    return null;
+  }
 
   const exploreLinks = siteConfig.navigation.header
     .filter((item) => item.enabled && item.group === "main")

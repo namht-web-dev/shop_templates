@@ -47,7 +47,7 @@ async function main() {
 
   // Tạo User test khớp với ID "user-001" của FakeUser trong Zustand Store
   await prisma.user.upsert({
-    where: { email: "nguyen.van.a@gmail.com" },
+    where: { email: "aadu@gmail.com" },
     update: {},
     create: {
       id: "user-001",

@@ -6,6 +6,7 @@ import { prisma } from "@/db";
 import { LIMIT_SESSION, SESSION_COOKIE } from "@/config/site";
 import { User } from "@/types";
 import { createHash } from "crypto";
+import { redirect } from "next/navigation";
 
 function hashToken(token: string) {
   return createHash("sha256").update(token).digest("hex");
@@ -123,4 +124,18 @@ export async function logoutAction() {
   }
 
   cookieStore.delete(SESSION_COOKIE);
+}
+
+export async function requireAdmin(locale = "vi"): Promise<User> {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect(`/${locale}/login`);
+  }
+
+  if (user.role !== "ADMIN") {
+    redirect(`/${locale}`);
+  }
+
+  return user;
 }

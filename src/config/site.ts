@@ -6,6 +6,8 @@ export const PAGE_SIZE = 8;
 export const SESSION_COOKIE = "smartiot-sessionKey";
 export const LIMIT_SESSION = 5;
 
+export const PHONE_REGEX = /^(0|\+84)(3|5|7|8|9)[0-9]{8}$/;
+
 export const SITE_OPEN_GRAPH_LOCALES: Record<Locale, string> = {
   vi: "vi_VN",
   en: "en_US",

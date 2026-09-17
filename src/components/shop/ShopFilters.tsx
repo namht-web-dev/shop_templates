@@ -168,6 +168,7 @@ export function ShopFilters({
           step={10}
           value={[draftMax]}
           onValueChange={handleSliderChange}
+          className="mx-auto w-full max-w-xs"
         />
 
         <div className="mt-3 flex items-center gap-2">

@@ -167,8 +167,8 @@ model Order {
 
   customerName    String?
   customerEmail   String?
-  customerPhone   String?
-  shippingAddress String?
+  customerPhone   String
+  shippingAddress String
   note            String?
 
   total     Float // Tổng tiền đơn hàng
