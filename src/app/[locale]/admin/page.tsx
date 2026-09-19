@@ -14,6 +14,7 @@ import {
 import { prisma } from "@/db";
 import { getCurrentUser } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PATHS } from "@/lib/paths";
 
 type AdminPageProps = {
   params: Promise<{ locale: string }>;
@@ -116,6 +117,7 @@ export default async function AdminPage({ params }: AdminPageProps) {
         code: true,
         customerName: true,
         customerEmail: true,
+        customerPhone: true,
         total: true,
         status: true,
         createdAt: true,
@@ -212,7 +214,7 @@ export default async function AdminPage({ params }: AdminPageProps) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-6">
+    <div className="mx-auto w-full lg:max-w-7xl max-w-5xl space-y-6">
       {/* Page heading */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
@@ -292,6 +294,7 @@ export default async function AdminPage({ params }: AdminPageProps) {
                     <th className="pb-3 pr-4 font-medium">Mã đơn</th>
                     <th className="pb-3 pr-4 font-medium">Khách hàng</th>
                     <th className="pb-3 pr-4 font-medium">Ngày đặt</th>
+                    <th className="pb-3 pr-4 font-medium">SĐT</th>
                     <th className="pb-3 pr-4 text-right font-medium">
                       Tổng tiền
                     </th>
@@ -315,7 +318,9 @@ export default async function AdminPage({ params }: AdminPageProps) {
                       <td className="whitespace-nowrap py-4 pr-4 text-muted-foreground">
                         {dateFormatter.format(order.createdAt)}
                       </td>
-
+                      <td className="py-4 pr-4 font-medium">
+                        {order.customerPhone}
+                      </td>
                       <td className="whitespace-nowrap py-4 pr-4 text-right font-medium">
                         {currency.format(order.total)}
                       </td>
@@ -376,7 +381,7 @@ export default async function AdminPage({ params }: AdminPageProps) {
                     </div>
 
                     <Link
-                      href={`/${locale}/blog/${post.slug}`}
+                      href={`/${locale}${PATHS.knowledge}/${post.slug}`}
                       className="shrink-0 text-xs text-primary hover:underline"
                     >
                       Xem bài

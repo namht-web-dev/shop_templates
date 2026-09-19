@@ -39,5 +39,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
     Site ID
     Remove Demo
-    Add Admin page
+    Add Admin page => Đang bị tại product, thêm mới sp bị reload mất hết value cũ
     localStorage đang lưu user tại trang login

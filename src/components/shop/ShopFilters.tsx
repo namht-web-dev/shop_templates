@@ -13,6 +13,7 @@ type ShopFiltersProps = {
   bounds: { min: number; max: number };
   currentSearch: string;
   currentCategory: string;
+  currentMinPrice?: number;
   currentMaxPrice?: number;
 };
 
@@ -22,6 +23,7 @@ export function ShopFilters({
   currentSearch,
   currentCategory,
   currentMaxPrice,
+  currentMinPrice,
 }: ShopFiltersProps) {
   const { t, formatPrice } = useI18n();
   const router = useRouter();
@@ -33,6 +35,7 @@ export function ShopFilters({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [draftMin, setDraftMin] = useState(bounds.min);
   const effectiveMax = currentMaxPrice ?? bounds.max;
+  const effectiveMin = currentMinPrice ?? bounds.min;
   const [draftMax, setDraftMax] = useState(effectiveMax);
 
   const updateParams = (newParams: Record<string, string | null>) => {
@@ -53,9 +56,10 @@ export function ShopFilters({
   };
 
   useEffect(() => {
-    setDraftMin(bounds.min);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDraftMin(effectiveMin);
     setDraftMax(effectiveMax);
-  }, [bounds.min, effectiveMax]);
+  }, [effectiveMin, effectiveMax]);
 
   const clearFilters = () => {
     setSearchInput("");
@@ -67,31 +71,36 @@ export function ShopFilters({
   };
 
   const handleSliderChange = (values: number[]) => {
-    const max = values[0];
-
-    setDraftMax(Math.max(draftMin, max));
+    setDraftMin(values[0]);
+    setDraftMax(values[1]);
   };
 
   const handleMinChange = (value: string) => {
+    if (value === "") return;
+
     const min = Number(value);
 
-    if (Number.isNaN(min)) return;
+    if (!Number.isFinite(min)) return;
 
-    setDraftMin(Math.min(min, draftMax));
+    setDraftMin(min);
   };
 
   const handleMaxChange = (value: string) => {
+    if (value === "") return;
+
     const max = Number(value);
 
-    if (Number.isNaN(max)) return;
+    if (!Number.isFinite(max)) return;
 
-    setDraftMax(Math.max(max, draftMin));
+    setDraftMax(max);
   };
 
   const handleApplyPrice = () => {
+    const max = Math.min(bounds.max, Math.max(draftMax, draftMin));
+    const min = Math.max(bounds.min, Math.min(draftMin, draftMax));
     updateParams({
-      minPrice: draftMin.toString(),
-      maxPrice: draftMax.toString(),
+      minPrice: min.toString(),
+      maxPrice: max.toString(),
     });
   };
 
@@ -166,7 +175,7 @@ export function ShopFilters({
           min={bounds.min}
           max={bounds.max}
           step={10}
-          value={[draftMax]}
+          value={[draftMin, draftMax]}
           onValueChange={handleSliderChange}
           className="mx-auto w-full max-w-xs"
         />

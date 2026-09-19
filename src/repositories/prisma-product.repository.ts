@@ -26,6 +26,9 @@ export class PrismaProductRepository implements ProductRepository {
       pageSize = 9,
     } = query;
 
+    const safePageSize = Math.max(1, pageSize);
+    const safePage = Math.max(1, page);
+
     const where: any = {};
 
     // 1. Lọc theo Danh mục
@@ -45,7 +48,38 @@ export class PrismaProductRepository implements ProductRepository {
       ];
     }
 
-    // 3. Sắp xếp (Sorting)
+    // 3. Lọc giá thực tế trước khi count và phân trang
+    const priceConditions: any[] = [];
+
+    if (minPrice !== undefined) {
+      priceConditions.push({
+        OR: [
+          { salePrice: { gte: minPrice } },
+          {
+            salePrice: null,
+            price: { gte: minPrice },
+          },
+        ],
+      });
+    }
+
+    if (maxPrice !== undefined) {
+      priceConditions.push({
+        OR: [
+          { salePrice: { lte: maxPrice } },
+          {
+            salePrice: null,
+            price: { lte: maxPrice },
+          },
+        ],
+      });
+    }
+
+    if (priceConditions.length > 0) {
+      where.AND = [...(where.AND ?? []), ...priceConditions];
+    }
+
+    // 4. Sắp xếp (Sorting)
     let orderBy: any = {};
     switch (sort) {
       case "price-asc":
@@ -76,26 +110,27 @@ export class PrismaProductRepository implements ProductRepository {
       }),
     ]);
 
-    let products = rawProducts as unknown as Product[];
+    const totalPages = Math.max(1, Math.ceil(total / safePageSize));
 
-    // Lọc theo khoảng giá (minPrice, maxPrice) dựa trên giá bán thực tế (salePrice || price)
-    if (minPrice !== undefined || maxPrice !== undefined) {
-      products = products.filter((p) => {
-        const price = this.effectivePriceSql(p);
-        if (minPrice !== undefined && price < minPrice) return false;
-        if (maxPrice !== undefined && price > maxPrice) return false;
-        return true;
-      });
-    }
+    // Đảm bảo page không vượt quá tổng số trang
+    const actualPage = Math.min(safePage, totalPages);
 
-    const totalPages = Math.max(1, Math.ceil(total / pageSize));
-    const safePage = Math.min(Math.max(1, page), totalPages);
+    // Nếu page vượt giới hạn, query lại đúng trang cuối
+    const products =
+      actualPage === safePage
+        ? rawProducts
+        : await prisma.product.findMany({
+            where,
+            orderBy,
+            skip: (actualPage - 1) * safePageSize,
+            take: safePageSize,
+          });
 
     return {
-      items: products,
+      items: products as unknown as Product[],
       total,
-      page: safePage,
-      pageSize,
+      page: actualPage,
+      pageSize: safePageSize,
       totalPages,
     };
   }

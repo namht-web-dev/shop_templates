@@ -25,7 +25,9 @@ export function ProductCard({
   const { t, l, locale, formatPrice } = useI18n();
 
   const onSale =
-    product.salePrice !== undefined && product.salePrice < product.price;
+    product.salePrice !== undefined &&
+    product.salePrice !== null &&
+    product.salePrice < product.price;
 
   const discount = onSale
     ? Math.round((1 - product.salePrice! / product.price) * 100)
@@ -84,7 +86,7 @@ export function ProductCard({
           {l(product.shortDescription)}
         </p>
 
-        <div className="mt-auto flex items-baseline gap-2 pt-1">
+        <div className="mt-auto flex items-baseline gap-2 pt-1 mx-auto">
           <span className="text-lg font-semibold text-primary">
             {formatPrice(product.salePrice ?? product.price)}
           </span>

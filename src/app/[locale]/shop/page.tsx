@@ -22,6 +22,7 @@ type PageProps = {
     sort?: string;
     page?: string;
     maxPrice?: string;
+    minPrice?: string;
   }>;
 };
 
@@ -69,6 +70,7 @@ export default async function ShopPage({
   const category = (params.category as ProductCategory) || "all";
   const sort = (params.sort as ProductSort) || "popular";
   const page = Number(params.page) || 1;
+  const minPrice = params.minPrice ? Number(params.minPrice) : undefined;
   const maxPrice = params.maxPrice ? Number(params.maxPrice) : undefined;
   const t = await getTranslations({
     locale,
@@ -86,6 +88,7 @@ export default async function ShopPage({
       page,
       pageSize: PAGE_SIZE,
       maxPrice,
+      minPrice,
     }),
   ]);
 
@@ -115,6 +118,7 @@ export default async function ShopPage({
               bounds={bounds}
               currentSearch={search}
               currentCategory={category}
+              currentMinPrice={minPrice}
               currentMaxPrice={maxPrice}
             />
           </div>

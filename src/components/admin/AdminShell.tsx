@@ -18,12 +18,24 @@ interface AdminShellProps {
 
 export function AdminShell({ user, children }: AdminShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+
+  const sidebarWidth = sidebarCollapsed ? "lg:w-16" : "lg:w-64";
+  const mainMargin = sidebarCollapsed ? "lg:ml-16" : "lg:ml-64";
 
   return (
-    <div className="flex min-h-screen w-full bg-muted/20">
+    <div className="flex h-dvh min-h-0 w-full overflow-hidden bg-muted/20">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 overflow-y-auto border-r bg-background lg:block">
-        <AdminSidebar user={user} />
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 hidden overflow-y-auto border-r bg-background transition-[width] duration-200 lg:block ${sidebarWidth}`}
+      >
+        <AdminSidebar
+          user={user}
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={() => {
+            setSidebarCollapsed((prev) => !prev);
+          }}
+        />
       </aside>
 
       {/* Mobile sidebar */}
@@ -50,10 +62,14 @@ export function AdminShell({ user, children }: AdminShellProps) {
       </Sheet>
 
       {/* Main */}
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div
+        className={`flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden transition-[margin] duration-200 ${mainMargin}`}
+      >
         <AdminHeader user={user} onMenuClick={() => setMobileOpen(true)} />
 
-        <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain p-32 sm:p-6 lg:p-8 mt-16">
+          {children}
+        </main>
       </div>
     </div>
   );

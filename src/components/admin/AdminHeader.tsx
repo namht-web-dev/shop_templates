@@ -61,7 +61,7 @@ export function AdminHeader({ user, onMenuClick }: AdminHeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b bg-background/95 px-3 backdrop-blur supports-backdrop-filter:bg-background/80 sm:px-5">
+    <header className="fixed top-0 w-full z-30 flex h-16 shrink-0 items-center justify-between border-b bg-background/95 px-3 backdrop-blur supports-backdrop-filter:bg-background/80 sm:px-5">
       {/* Left */}
       <div className="flex min-w-0 items-center gap-2 sm:gap-3">
         <Button
@@ -74,15 +74,7 @@ export function AdminHeader({ user, onMenuClick }: AdminHeaderProps) {
           <Menu />
         </Button>
 
-        <div className="min-w-0">
-          <h1 className="truncate text-base font-semibold sm:text-lg">
-            {pageTitle}
-          </h1>
-
-          <p className="hidden text-xs text-muted-foreground sm:block">
-            {t("admin.subtitle")}
-          </p>
-        </div>
+        <div className="min-w-0 ml-7"></div>
       </div>
 
       {/* Right */}

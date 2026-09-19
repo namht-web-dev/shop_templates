@@ -37,7 +37,7 @@ import {
   useOrdersStore,
 } from "@/store";
 
-import { useI18n } from "@/i18n";
+import { useI18n, withLocale } from "@/i18n";
 import { PATHS } from "@/lib/paths";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -66,7 +66,7 @@ const FAKE_PREVIOUS_ADDRESSES: PreviousAddress[] = [
 ];
 
 export default function CartPage() {
-  const { t, l, formatPrice } = useI18n();
+  const { t, l, formatPrice, locale } = useI18n();
   const router = useRouter();
 
   /* -------------------------------------------------------------------------- */
@@ -321,7 +321,9 @@ export default function CartPage() {
             }
             action={
               <Button asChild>
-                <Link href={PATHS.shop}>{t("cart.continueShopping")}</Link>
+                <Link href={withLocale(PATHS.shop, locale)}>
+                  {t("cart.continueShopping")}
+                </Link>
               </Button>
             }
           />
@@ -370,7 +372,7 @@ export default function CartPage() {
                 >
                   {/* Product image */}
                   <Link
-                    href={PATHS.shopProduct(item.slug)}
+                    href={withLocale(PATHS.shopProduct(item.slug), locale)}
                     className="shrink-0"
                   >
                     <Image
@@ -389,7 +391,7 @@ export default function CartPage() {
                     {/* Product name + remove */}
                     <div className="flex items-start justify-between gap-3">
                       <Link
-                        href={PATHS.shopProduct(item.slug)}
+                        href={withLocale(PATHS.shopProduct(item.slug), locale)}
                         className="line-clamp-2 font-medium hover:text-primary hover:underline"
                       >
                         {l({
@@ -691,7 +693,7 @@ export default function CartPage() {
               </Button>
 
               <Button asChild variant="ghost" className="mt-4 w-full">
-                <Link href={PATHS.shop}>
+                <Link href={withLocale(PATHS.shop, locale)}>
                   <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
 
                   {t("cart.continueShopping")}
